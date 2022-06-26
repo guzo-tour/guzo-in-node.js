@@ -2,13 +2,11 @@ const express = require('express');
 
 const Router = express.Router();
 
-Router
-    .get('/signup', (req, res)=>{
-        res.render('auth/signupPage')
-    })
-    .post('/signup', (req, res)=>{
+const { userSignupPage, userSignin, userSignup } = require('../controller/userController')
 
-    })
+Router
+    .get('/signup', userSignupPage)
+    .post('/signup', userSignup)
     .get('/login', (req, res)=>{
         res.render('auth/loginPage')
     })
