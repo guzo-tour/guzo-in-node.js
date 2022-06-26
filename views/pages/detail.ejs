@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="stylesheet" href="../../css/rate_style.css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" type="image/png" href="/img/favicon.png" />
+
+    <title>Guzo Tours | </title>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <nav class="nav nav--tours">
+        <a href="" class="nav__el">All tours</a>
+        <form class="nav__search">
+     
+        </form>
+      </nav>
+      <div class="header__logo">
+        <img src="img/logo-white.png" alt="Guzo tour logo" />
+      </div>
+      <nav class="nav nav--user">
+        
+    
+        </a>
+        <a href="" class="nav__el"></a>
+        <a href="" class="nav__el"></a>
+        <a href="" class="nav__el"></a>        
+      </nav>
+    </header>
+    <section class="section-header">
+      
+      <div class="heading-box">
+        <h1 class="heading-primary">
+        
+          <span> <%=result[0].tour_name %>  <br />
+            </span
+          >
+        </h1>
+        
+        <div class="heading-box__group">
+          <div class="heading-box__detail">
+            <i class="fa-solid fa-clock"></i>
+            <svg class="heading-box__icon">
+            </svg>
+            <span class="heading-box__text"> <%=result[0].duration %>  days</span>
+          </div>
+          <div class="heading-box__detail">
+            <i class="fa-solid fa-map-location-dot"></i>
+
+            <svg class="heading-box__icon">
+            </svg>
+            <span class="heading-box__text"></span> <%=result[0].region %>  <%= result[0].town  %> 
+          </div>
+        </div> 
+      </div>
+    </section>
+
+    <section class="section-description">
+      <div class="overview-box">
+        <div>
+          <div class="overview-box__group">
+            <h2 class="heading-secondary ma-bt-lg">Quick facts</h2>
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="./img/icons.svg#icon-calendar"></use>
+              </svg>
+              <span class="overview-box__label">Start At  </span>
+              <span class="overview-box__text"> </span>
+            </div>
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="./img/icons.svg#icon-trending-up"></use>
+              </svg>
+              <span class="overview-box__label">Difficulty </span>
+              <span class="overview-box__text"><%= result[0].difficulty %> </span>
+            </div>
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="./img/icons.svg#icon-user"></use>
+              </svg>
+              <span class="overview-box__label">Participants</span>
+              <span class="overview-box__text"><%= result[0].group_size %>   people</span>
+            </div>
+            <div class="overview-box__detail">
+              <svg class="overview-box__icon">
+                <use xlink:href="img/icons.svg#icon-star"></use>
+              </svg>
+              <span class="overview-box__label"><%= result[0].rating%> /<%= result[0].rating_quantity%></span>
+              <span class="overview-box__text"></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="description-box">
+        <h2 class="heading-secondary ma-bt-lg">About the  tour</h2>
+        <p class="description__text">
+         <%= result[0].description %> 
+         
+        </p>
+ 
+      </div>
+    </section>
+
+    <section class="section-pictures">
+      <div class="picture-box">
+        <img
+          class="picture-box__img picture-box__img--1"
+          src="./img/tour-5-1.jpg"
+          alt="The Park Camper Tour 1"
+        />
+      </div>
+      <div class="picture-box">
+        <img
+          class="picture-box__img picture-box__img--2"
+          src="./img/tour-5-2.jpg"
+          alt="The Park Camper Tour 1"
+        />
+      </div>
+      <div class="picture-box">
+        <img
+          class="picture-box__img picture-box__img--3"
+          src="./img/tour-5-3.jpg"
+          alt="The Park Camper Tour 1"
+        />
+      </div>
+    </section>
+
+    <section class="section-map">
+      <div id="map"></div>
+      <script>
+        mapboxgl.accessToken ='pk.eyJ1Ijoiam9uYXNzY2htZWR0bWFubiIsImEiOiJjam54ZmM5N3gwNjAzM3dtZDNxYTVlMnd2In0.ytpI7V7w7cyT1Kq5rT9Z1A';
+
+        const geojson = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [37.86177611132169,6.9549559875248885]
+              },
+              properties: {
+                description: 'soddo'
+              }
+            },
+             {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [ 38.74896017704448,8.994029814442744]
+              },
+              properties: {
+                description: 'Addis Ababa'
+              }
+            },
+          ]
+        };
+
+        const map = new mapboxgl.Map({
+          container: 'map',
+          style: 'mapbox://styles/jonasschmedtmann/cjnxfn3zk7bj52rpegdltx58h',
+          scrollZoom: false
+        });
+
+        const bounds = new mapboxgl.LngLatBounds();
+
+        geojson.features.forEach(function(marker) {
+          var el = document.createElement('div');
+          el.className = 'marker';
+
+          new mapboxgl.Marker({
+            element: el,
+            anchor: 'bottom'
+          })
+            .setLngLat(marker.geometry.coordinates)
+            .addTo(map);
+
+          new mapboxgl.Popup({
+            offset: 30,
+            closeOnClick: false
+          })
+            .setLngLat(marker.geometry.coordinates)
+            .setHTML('<p>' + marker.properties.description + '</p>')
+            .addTo(map);
+
+          bounds.extend(marker.geometry.coordinates);
+        });
+
+        map.fitBounds(bounds, {
+          padding: {
+            top: 200,
+            bottom: 150,
+            left: 50,
+            right: 50
+          }
+        });
+
+        map.on('load', function() {
+          map.addLayer({
+            id: 'route',
+            type: 'line',
+            source: {
+              type: 'geojson',
+              data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'LineString',
+                  coordinates: [
+                    [37.86177611132169,6.9549559875248885],
+                    [38.74896017704448,8.994029814442744],
+                
+                  ]
+                }
+              }
+            },
+            layout: {
+              'line-join': 'round',
+              'line-cap': 'round'
+            },
+            paint: {
+              'line-color': '#55c57a',
+              'line-opacity': 0.6,
+              'line-width': 3
+            }
+          });
+        });
+      </script>
+    </section>
+
+    <section class="hidden section-reviews">
+       <div class="reviews">
+  <%  for(var data2=0; data2<result2.length;data2++ ){ %> 
+        <div class="reviews__card">
+          <div class="reviews__avatar">
+            <img
+              src="./img/users/default.jpg"
+              alt="Jim Brown"
+              class="reviews__avatar-img"
+            />
+            <h6 class="reviews__user"></h6>
+          </div>
+          <p class="reviews__text">
+           <%= result2[data2].review %>
+           
+          </p>
+   
+           <div class="reviews__rating">
+        <p>rates</p>
+            <%  for(var i=0; i<result2[data2].rating;i++ ){ %> 
+               
+              <svg class="reviews__star reviews__star--active"><use xlink:href="img/icons.svg#icon-star"></use></svg>
+                <% } %> 
+           </div> 
+           </div>
+    <% } %> 
+    
+    </div>
+    </section>
+
+    <section class="section-cta">
+      <div class="cta">
+        <div class="cta__img cta__img--logo">
+          <img src="./img/logo-white.png" alt="Guzo tour  logo" class="" />
+        </div>
+       
+        <img src="./img/tours/tour-1-1.jpg" alt="" class="cta__img cta__img--1" />
+        <img src="./img/tours/tour-1-1.jpg" alt="" class="cta__img cta__img--2" />
+     
+        <div class="cta__content" id="comments">
+          <div>
+
+          </div>   
+        </div>
+      </div>
+
+ 
+
+      
+    <div class="cta review">
+    
+        <div class="cta__content">
+          <h2 class="heading-secondary">Comment Now</h2>
+          <form action="" method='post'>
+             
+       <textarea name="comments" id="comment" cols="30" rows="10"></textarea>
+        <h2 class="heading-secondary">Rate Now</h2>
+  <span class="star-rating">
+  <input type="radio" name="rating1" value="1"><i></i>
+  <input type="radio" name="rating1" value="2"><i></i>
+  <input type="radio" name="rating1" value="3"><i></i>
+  <input type="radio" name="rating1" value="4"><i></i>
+  <input type="radio" name="rating1" value="5"><i></i>
+</span>
+      <button name="comment" class="btn btn--green span-all-rows">submit comment</button>
+           </form>
+          
+          
+        </div>
+      </div>
+
+     
+    </section>
+
+ 
+  </body>
