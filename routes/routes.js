@@ -2,7 +2,7 @@ const express = require('express');
 
 const Router = express.Router();
 
-const { userSignupPage, userLoginPage, userSignup, userLogin } = require('../controller/userController')
+const { userSignupPage, userLoginPage, userSignup, userLogin } = require('../controller/authController')
 
 const { validationRules } = require('../lib/validation_rules')
 
