@@ -1,5 +1,5 @@
 const mysql = require('mysql')
-const { dbAuth } = require('DB_Authentication')
+const { dbAuth } = require('./DB_Authentication')
 
 const conn = mysql.createConnection(dbAuth)
 
