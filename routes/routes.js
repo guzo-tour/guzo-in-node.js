@@ -2,18 +2,20 @@ const express = require('express');
 
 const Router = express.Router();
 const {homePage ,detail}=require("../controller/tourController")
-
+const {
+  userSignupPage,
+  userLoginPage,
+  userSignup,
+  userLogin,
+} = require("../controller/authController");
+const { validationRules } = require("../lib/validation_rules");
 Router
-  .get("/signup", (req, res) => {
-  res.render("auth/signupPage");
-})
-  .post("/signup", (req, res) => {})
-  .get("/login", (req, res) => {
-      res.render("auth/loginPage");
-    })
-   .post("/login", (req, res) => {})
-    
-   .get("/", homePage);
-   Router.get("/detail", detail, (req, res) => {});  
+  .get("/signup", userSignupPage)
+  .post("/signup", validationRules[1], userSignup)
+  .get("/login", userLoginPage)
+  .post("/login", validationRules[0], userLogin)
+
+  .get("/", homePage);
+    Router.get("/detail", detail, (req, res) => {});  
 
 module.exports = Router;
