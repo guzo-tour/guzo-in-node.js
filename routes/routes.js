@@ -2,16 +2,14 @@ const express = require('express');
 
 const Router = express.Router();
 
-const { userSignupPage, userSignin, userSignup } = require('../controller/userController')
+const { userSignupPage, userLoginPage, userSignup, userLogin } = require('../controller/userController')
+
+const { validationRules } = require('../lib/validation_rules')
 
 Router
     .get('/signup', userSignupPage)
-    .post('/signup', userSignup)
-    .get('/login', (req, res)=>{
-        res.render('auth/loginPage')
-    })
-    .post('/login', (req, res)=>{
-
-    })
+    .post('/signup', validationRules[1], userSignup)
+    .get('/login', userLoginPage)
+    .post('/login', validationRules[0], userLogin)
 
 module.exports = Router;
