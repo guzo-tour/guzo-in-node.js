@@ -1,15 +1,14 @@
 const sessions = require('express-session')
 
-
+const {validationRules} = require('express')
 
 module.exports.controllers = {
     userLoginPage: (req, res)=>{
-        isLogged = false
-
+        return res.render('/auth/login')        
     },
-    userLogin: (req, res)=>{
-        isLogged = false
 
+    userLogin: (req, res)=>{
+        const error = validationRules
     },
     userSignup: (req, res)=>{
         if(req.session.userID){
