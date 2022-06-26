@@ -1,6 +1,7 @@
 const express = require('express');
 
 const Router = express.Router();
+const {homePage}=require("../controller/tourController")
 
 Router.get("/signup", (req, res) => {
   res.render("auth/signupPage");
@@ -10,7 +11,8 @@ Router.get("/signup", (req, res) => {
     res.render("auth/loginPage");
   })
   .post("/login", (req, res) => {})
-  .get("/", (req, res) => {});
+
+  .get("/", homePage);
   
 
 module.exports = Router;

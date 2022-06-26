@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
+    <title>Guzo Tour</title>
+  </head>
+  <body>
+  <header class="header">
+    <nav class="nav nav--tours">
+        <a href="" class="nav__el">All tours</a>
+        <li class="hov"> 
+          <button class="nav__search-btn">
+            <svg><use xlink:href="img/icons.svg#icon-search"></use></svg>
+            <form method="get" action="" class="nav__search">
+          </button> Search by
+        <ul class="seleter">
+                  <li><input type="radio" value="tour_name"  checked name="searchBy"/><span >name</span ></li>
+                  <li ><input type="radio" value="town" name="searchBy"/><br><span >town</span ></li>
+                  <li ><input type="radio" value="location" name="searchBy" /><span >location</span ></li>
+                  <li ><input type="radio" value="region" name="searchBy" /><span >region</span ></li>
+                  <li ><input type="radio" value="direction" name="searchBy" /><span >direction</span ></li>
+                  <li ><input type="radio" value="difficulty" name="searchBy" /><span >difficulty</span ></li>
+                  <li ><input type="radio" value="duration" name="searchBy" /><span >duration</span ></li>
+                  <li ><label for="region">price</label></li>
+                  <li ><input type="radio" id="greater" value=">=" name="searchBy" /><label for="greater">greater </label></li>
+                  <li ><input type="radio" id="less" value="<=" name="searchBy" /><label for="less">less</label></li>
+        </ul>
+      </li>
+          </ul>
+          <input
+            type="text"
+            placeholder="Search tours"
+            class="nav__search-input"
+            name="search_query"
+          />
+
+          <button class="btnsub" name="searchbtn" type="submit"><i class="fa-solid fa-magnifying-glass ficon"></i></button>
+        </form>
+      </nav>
+      <div class="header__logo">
+        <img src="img/logo-white.png" alt="Guzo tour logo" />
+      </div>
+      <nav class="nav nav--user">        
+
+    </nav>
+ </header>
+    <section class="overview" id="overview">
+      <div class="card-container">
+ <div class="card">
+    <div class="card__header">
+    <div class="card__picture">
+    <div class="card__picture-overlay">&nbsp;</div>
+    <img src="img/tours/" alt="" class="card__picture-img"
+              />
+             </div>
+              <h3 class="heading-tertirary">
+            <span></span></h3> </div>
+         <div class="card__details">
+          <h4 class="card__sub-heading">Easy -day tour</h4>
+          <p class="card__text">
+            Breathtaking hike through the Canadian Banff National Park
+          </p>
+          <div class="card__data">
+            <svg class="card__icon">
+            <i class="fa-solid fa-location-dot"> </i><span> , </span>
+            </svg>
+          </div>
+          <div class="card__data">
+          <i class="fa-solid fa-calendar-days"></i>
+            <span> ></span>
+          </div>
+          <div class="card__data">
+            <svg class="card__icon">
+              <use xlink:href="img/icons.svg#icon-flag"></use>
+            </svg>
+            <span>From AA  </span>
+          </div>
+          <div class="card__data">
+            <svg class="card__icon">
+              <use xlink:href="img/icons.svg#icon-user"></use>
+            </svg>
+            <span> people</span>
+          </div>
+        </div>
+
+        <div class="card__footer">
+          <p>
+            <span class="card__footer-value">ETB</span>
+            <span class="card__footer-text">per person</span>
+          </p>
+          <p class="card__ratings">
+            <span class="card__footer-value"></span>
+            <span class="card__footer-text">rating ()</span>
+          </p>
+        <a href="" class="btn btn--green btn--small">Details</a>
+        </div>
+      </div>
+
+
+
+ 
+      </div>
+    </section>
+    <div class="footer">
+   
+      <div class="footer__logo"> 
+        <img src="img/logo-green-round.png" alt="Natours logo" />
+        <span> GUZO TOUR </span>
+      </div>
+      <ul class="footer__nav">
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Download apps</a></li>
+        <li><a href="#">Become a guide</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <p class="footer__copyright">
+        &copy; By AASTU Students. All rights reserved.
+      </p>
+     
+</div>
+
+    <script src="./javascrift/js.js"></script>
+  
+    
+  </body>
+</html>
