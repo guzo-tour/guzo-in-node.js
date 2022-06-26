@@ -1,0 +1,26 @@
+
+#add-tour{
+   position: relative;
+   width: 70%;
+   margin: auto; 
+   font-size: 25px;
+   font-weight: 900;
+   line-height: 2;
+   text-align: center;
+   background-color: rgb(189, 223, 189);
+
+}
+#add-tour-form{
+    overflow: hidden;
+}
+input,section{
+    width: 25%;
+    height: 25px;
+}
+.area{
+    
+    color: red;
+   
+    
+}
+

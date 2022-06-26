@@ -1,0 +1,56 @@
+body{
+    position: relative;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+    font-weight: 600;
+
+}
+#sign-up, #login{
+    width: 40%;
+    height: auto;
+    margin: auto;
+    background-color: rgb(150, 233, 150);
+   
+}
+#signup-header, #login-header{
+    display: none;
+    text-align: center;
+}
+#sign-up-form, #login-form{
+    width: 90%;
+    padding-left: 15%;
+    line-height: 3;
+}
+#role{
+    font-weight: 600;
+    width: 20%;
+    height: 30px;
+    
+}
+#role option{
+    background-color: white;
+}
+#sign-up-form input, #login-form input{
+    width: 40%;
+    height: 25px;
+    
+}
+#submit{
+    position: relative;
+    right: 100px;
+    left: 350px;
+    bottom: 90px;
+    width: 12%;
+    height: 30px;
+    font-weight: 600;
+    
+}
+#login-submit{
+    position: relative;
+    right: 100px;
+    left: 350px;
+    bottom: 45px;
+    width: 12%;
+    height: 30px;
+    font-weight: 600;
+}
