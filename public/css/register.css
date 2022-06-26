@@ -223,3 +223,10 @@ a:hover{
 .title{
 	white-space: nowrap;
 }
+
+.error-message{
+	color: red;
+	font-size: 20px;
+	letter-spacing: 1.5px;
+	padding: 5px;
+}

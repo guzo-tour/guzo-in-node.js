@@ -4,6 +4,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const ejs = require('ejs')
 const sessions = require('express-session');
+const expressValidator = require('express-validator')
 
 const app = express()
 
@@ -14,10 +15,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');	
 
 app.use(express.static(`${__dirname}/public`))
-app.use(bodyParser.urlencoded({extended: false}))
-app.use(bodyParser.json())
+
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
 const SECRET_TOKEN = process.env.SECRET_TOKEN || "shh, its a secret"
+
+app.get('/mine',(req,res)=>{
+    res.redirect('/hey')
+})
+app.get('/hey', (req, res)=>{
+    
+})
 
 app.use(sessions({
     secret: SECRET_TOKEN,
