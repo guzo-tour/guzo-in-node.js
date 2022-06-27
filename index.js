@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const ejs = require('ejs')
 const sessions = require('express-session');
 const expressValidator = require('express-validator')
+const cookieParser = require('cookie-parser')
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use(express.static(`${__dirname}/public`))
 
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+app.use(cookieParser())
 
 const SECRET_TOKEN = process.env.SECRET_TOKEN || "shh, its a secret"
 
