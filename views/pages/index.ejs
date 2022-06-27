@@ -19,13 +19,12 @@
   <header class="header">
     <nav class="nav nav--tours">
         <a href="" class="nav__el">All tours</a>
+
+       <form action="/" class="nav__search"  method="get" >
         <li class="hov"> 
-          <button class="nav__search-btn">
-            <svg><use xlink:href="img/icons.svg#icon-search"></use></svg>
-            <form method="get" action="" class="nav__search">
-          </button> Search by
+           <p> Search by</p>
         <ul class="seleter">
-                  <li><input type="radio" value="tour_name"  checked name="searchBy"/><span >name</span ></li>
+                   <li><input type="radio" value="tour_name"  checked name="searchBy"/><span >name</span ></li>
                   <li ><input type="radio" value="town" name="searchBy"/><br><span >town</span ></li>
                   <li ><input type="radio" value="location" name="searchBy" /><span >location</span ></li>
                   <li ><input type="radio" value="region" name="searchBy" /><span >region</span ></li>
@@ -34,18 +33,17 @@
                   <li ><input type="radio" value="duration" name="searchBy" /><span >duration</span ></li>
                   <li ><label for="region">price</label></li>
                   <li ><input type="radio" id="greater" value=">=" name="searchBy" /><label for="greater">greater </label></li>
-                  <li ><input type="radio" id="less" value="<=" name="searchBy" /><label for="less">less</label></li>
+                  <li ><input type="radio" id="less" value='' name="searchBy" /><label for="less">less</label></li>
         </ul>
       </li>
-          </ul>
+       
           <input
             type="text"
             placeholder="Search tours"
             class="nav__search-input"
             name="search_query"
           />
-
-          <button class="btnsub" name="searchbtn" type="submit"><i class="fa-solid fa-magnifying-glass ficon"></i></button>
+          <button class="btnsub"  type="submit"><i class="fa-solid fa-magnifying-glass ficon"></i></button>
         </form>
       </nav>
       <div class="header__logo">
