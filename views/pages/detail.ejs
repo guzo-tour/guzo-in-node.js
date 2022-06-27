@@ -22,25 +22,7 @@
     />
   </head>
   <body>
-    <header class="header">
-      <nav class="nav nav--tours">
-        <a href="" class="nav__el">All tours</a>
-        <form class="nav__search">
-     
-        </form>
-      </nav>
-      <div class="header__logo">
-        <img src="img/logo-white.png" alt="Guzo tour logo" />
-      </div>
-      <nav class="nav nav--user">
-        
-    
-        </a>
-        <a href="" class="nav__el"></a>
-        <a href="" class="nav__el"></a>
-        <a href="" class="nav__el"></a>        
-      </nav>
-    </header>
+      <%- include('../partials/header'); -%>
     <section class="section-header">
       
       <div class="heading-box">
@@ -290,10 +272,10 @@
             <% if(true){ if(count!=result[0].group_size) { var left= result[0].group_size-count %> 
             <p class="cta__text"><%= result[0].duration %> days 1 adventure. Infinite memories. Make it yours today!</p>
               <p class="cta__text"><%= left %>place left</p>
-               <form action="?tour_id='.$tour_id.'" method="post"><button name="sub" class="btn btn--green span-all-rows">Book tour now!</button></form>      
-   
-
-            <%  }}%> 
+               <form action="book/?tour_id=<%= result[0].tour_id %>" method="post"><button name="sub" class="btn btn--green span-all-rows">Book tour now!</button></form>      
+            <%  } else{  %>
+                <p class="cta__text" >sorry the is no space for booking</p>
+             <%   }}%> 
 
           </div>   
         </div>
@@ -306,7 +288,7 @@
     
         <div class="cta__content">
           <h2 class="heading-secondary">Comment Now</h2>
-<form action="" method='post'>           
+<form action="review/?tour_id=<%= result[0].tour_id %> " method='post'>           
     <textarea name="comments" id="comment" cols="30" rows="10"></textarea>
     <h2 class="heading-secondary">Rate Now</h2>
     <span class="star-rating">

@@ -14,7 +14,6 @@ Router
   .post("/signup", validationRules[1], userSignup)
   .get("/login", userLoginPage)
   .post("/login", validationRules[0], userLogin)
-
   .get("/", homePage);
     Router.get("/detail", detail, (req, res) => {});  
 

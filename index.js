@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express')
+const jwt = require("jsonwebtoken");
 const path = require('path')
 const bodyParser = require('body-parser')
 const ejs = require('ejs')
@@ -30,7 +31,7 @@ app.get('/hey', (req, res)=>{
 
 app.use(sessions({
     secret: SECRET_TOKEN,
-    resave: false,
+     resave: false,
     saveUninitialized: true,
     cookie: { secure: true }
 }))

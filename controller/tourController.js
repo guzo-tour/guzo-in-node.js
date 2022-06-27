@@ -9,7 +9,7 @@ module.exports = {
     const data = conn.query(sql, function (err, result, fields) {
       if (err) throw err;
       res.status(200);
-      res.render("pages/index", { result });
+      res.render("pages/index", { result});
     });
   },
   detail: (req, res) => {
@@ -29,7 +29,7 @@ module.exports = {
    
      })
 
-
+   
     
   },
 };
