@@ -1,35 +1,48 @@
 const sessions = require('express-session')
 const { validationResult } = require('express-validator')
-const {encryptData, decryptData} = require('../lib/modules')
+const {encryptData, decryptData,signToken} = require('../lib/modules')
 const conn = require('../config/DB_Connection')
-
+const { promisify} = require("util");
+const jwt = require("jsonwebtoken");
 module.exports = {
-    homePage: (req, res, next)=>{
-        const user = req.session
-        if(user != null){
-            const query = 'select * from `user` where `user_id`=?'
+
+    userHomePage: async (req, res, next, results)=>{
+        if(req.cookies.jwt){
+            const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+            const query = "SELECT * FROM `user` where `user_id`=?;"
             try{
-                conn.query(query, user.userId, (error, result)=>{
-                    if (error)
-                    {
-                        console.log(err)
-                        throw err
-                    }
-                    if(result.length == 0){
-                        res.render('pages/index', {isLogged: false, msg: null})
-                    }
-                    res.render('pages/index', {isLogged: true, msg: `Welcome back user`})
-                })
+                
+                conn.query(query, decoded.userId, (error, result) => {
+                  if (error) {
+                    console.log(error);
+                    throw error;
+                  }
+
+                  res.render("pages/index", {
+                    isLogged: true,
+                    msg: `Welcome back user`,
+                    result: results,
+                    user: result,
+                  });
+                });
             }catch(err){
                 next(err);
             }
+        
+    }
+        else {
+               res.render("pages/index", {
+                 isLogged: false,
+                 msg: `Welcome back user`,
+                 result: results,
+               });
         }
     },
     userLoginPage: (req, res)=>{
         return res.render('auth/loginPage', {error: null})        
     },
 
-    userLogin: (req, res)=>{
+    userLogin: async(req, res)=>{
         const error = validationResult(req)
         const { body } = req
         if (!error.isEmpty()) {
@@ -39,22 +52,36 @@ module.exports = {
         }
         try{
             let query = 'select * from `user` where `username`=?';
-            conn.query(query, body.user_name, (err, result)=>{
+            conn.query(query, body.user_name, async(err, result)=>{
                 if (err)
                 {
                     console.log(err)
-                    throw err
+                     throw err
                 }
 
-                if(result.length == 0 || await decryptData(result[0].pwd != body.password)){
-                    return res.render('auth/loginPage', {error: 'Invalid Username or Password'});
-                }
-                req.session.user = {
-                    role: 'user',
-                    userId: encryptData(result[0].user_id.toString())
+                if(result.length == 0 || !(await decryptData(body.password, result[0].pw))){
+                    return res.render('auth/loginPage',  { error: 'Invalid Username or Password'});
                 }
 
-               
+                const user = {
+                  role: "user",
+                  userId: result[0].user_id
+                };
+
+                const token = signToken(user);
+
+                const cookieOptions = {
+                    expires: new Date(
+                        Date.now() +
+                        process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000 
+                        ),
+                        httpOnly: true,
+                };
+              
+
+                res.cookie("jwt", token, cookieOptions);
+                
+    
 
                 return res.redirect('/')
             })
@@ -92,7 +119,7 @@ module.exports = {
             
             const hashedPass = await encryptData(body.password)
             query = 'insert into `user`(`first_name`, `last_name`, `email`, `username`, `pw`, `phone_number`) values(?,?,?,?,?,?)'
-            conn.query(query, [body.first_name, body.last_name, body.email, body.user_name, hashedPass, body.phone], (error, rows)=>{
+            conn.query(query, [body.first_name, body.last_name, body.email, body.user_name, hashedPass, body.phone], async (error, rows)=>{
                 if(error)
                 {
                     console.log (error);
@@ -103,10 +130,24 @@ module.exports = {
                     return res.render('auth/signupPage', 
                                         {error: 'Your registration has failed.'});
                 }
-                req.session.user = {
-                    role: 'user',
-                    userId: encryptData(rows.insertId.toString())
-                }
+
+                const user = {
+                  role: "user",
+                  userId:rows.insertId,
+                };
+
+                const token = signToken(user);
+
+                const cookieOptions = {
+                  expires: new Date(
+                    Date.now() +
+                      process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+                  ),
+                  httpOnly: true,
+                };
+
+                res.cookie("jwt", token, cookieOptions);
+                
                 res.redirect('/')
             });		
         }catch(err){
@@ -114,8 +155,13 @@ module.exports = {
         }
 
     },
-    userLogout: (req, res, next)=>{
-        res.session = null
-        res.redirect('/');
-    }
+    userLogout: (req, res) => {
+        res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() -10 * 1000),
+        httpOnly: true
+  });
+  res.redirect("/");
+  
+
+}
 }

@@ -28,10 +28,9 @@ module.exports = {
           if(err) throw err;
           console.log("record inserted");
         })
-       }
-    });
-   },
-  
+      }
+    })
+  },
   editTour: async(req,res)=>{
     const tourName = req.body.tour_name;
     const duration = req.body.duration
@@ -62,18 +61,18 @@ module.exports = {
 	  var query = `DELETE FROM tours WHERE tour_id = "${tourId}"`;
    	conn.query(query, function(error){
 
-		if(error)
-		{
-			console.log(error);
-			throw error;
-		}
-		else
-		{
-			req.flash('success', 'Tour has been deleted');
-			res.redirect('../display');
-		}
+      if(error)
+      {
+        console.log(error);
+        throw error;
+      }
+      else
+      {
+        req.flash('success', 'Tour has been deleted');
+        res.redirect('../display');
+      }
 
-	});
+	  });
   }
 }
-
+    

@@ -11,20 +11,16 @@
       <nav class="nav nav--user">
         
      <nav class="nav nav--user">        
-          <a href="view/admin/adminProfile.php" class="nav__el">
-          }
-          else{
-            echo '<a href="view/shared/profile.php" class="nav__el">';
-          }
-          $filepath = "<img src = "."multimedia/img/users/".$photo." class='nav__user-img'.".">";
-          //alt="User photo" class="nav__user-img"
-          echo $filepath.'</a>';
-          echo '<a href="controller/authController/log_out.php" class="nav__el">Logout</a>';
-        }else{
-          echo '<a href="./view/shared/login.php" class="nav__el">Login</a>';
-          echo '<a href="./view/shared/register.php" class="nav__el">Sign Up</a>';
-        }
-        ?>
+          <%  if(isLogged){ %> 
+         <a href="view/shared/profile.php" class="nav__el">
+         <img src = "img/users/<%= user[0].photo %> " class='nav__user-img'>
+          </a>
+          <a href="logout" class="nav__el">Logout</a>
+          <% } %> 
+       <%  if(!isLogged){ %> 
+       <a href="/login" class="nav__el">Login</a>
+       <a href="/signup" class="nav__el">Sign Up</a>
+        <% } %> 
     </nav>
         </a>
         <a href="" class="nav__el"></a>
