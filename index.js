@@ -20,15 +20,6 @@ app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-const SECRET_TOKEN = process.env.SECRET_TOKEN || "shh, its a secret"
-
-app.get('/mine',(req,res)=>{
-    res.redirect('/hey')
-})
-app.get('/hey', (req, res)=>{
-    
-})
-
 app.use(sessions({
     secret: SECRET_TOKEN,
      resave: false,
@@ -38,10 +29,21 @@ app.use(sessions({
 
 app.use('/', Router)
 
-
-
 const PORT = process.env.PORT || 5050
 
 app.listen(PORT,()=>{
     console.log(`Server running on http:/localhost:${PORT}`);
 })
+
+//Rest api
+const userRouter = require('./routes/userRoute');
+const tourRouter = require('./routes/tourRoute');
+const reviewRouter = require('./routes/reviewRoute');
+const bookingRouter = require('./routes/bookingRoute');
+const viewRouter = require('./routes/viewsRoute');
+
+app.use('/', viewRouter);
+app.use('/user',userRouter);
+app.use('/tour',tourRouter);
+app.use('/review', reviewRouter);
+app.use('/booking', bookingRouter);

@@ -1,34 +1,9 @@
-const sessions = require('express-session')
-const { validationResult } = require('express-validator')
-const {encryptData, decryptData} = require('../lib/modules')
-const conn = require('../config/DB_Connection')
+const sessions = require('express-session');
+const { validationResult } = require('express-validator');
+const {encryptData, decryptData} = require('../lib/modules');
+const conn = require('../config/DB_Connection');
 
 module.exports = {
-    homePage: (req, res, next)=>{
-        const user = req.session
-        if(user != null){
-            const query = 'select * from `user` where `user_id`=?'
-            try{
-                conn.query(query, user.userId, (error, result)=>{
-                    if (error)
-                    {
-                        console.log(err)
-                        throw err
-                    }
-                    if(result.length == 0){
-                        res.render('pages/index', {isLogged: false, msg: null})
-                    }
-                    res.render('pages/index', {isLogged: true, msg: `Welcome back user`})
-                })
-            }catch(err){
-                next(err);
-            }
-        }
-    },
-    userLoginPage: (req, res)=>{
-        return res.render('auth/loginPage', {error: null})        
-    },
-
     userLogin: (req, res)=>{
         const error = validationResult(req)
         const { body } = req
@@ -45,7 +20,6 @@ module.exports = {
                     console.log(err)
                     throw err
                 }
-
                 if(result.length == 0 || await decryptData(result[0].pwd != body.password)){
                     return res.render('auth/loginPage', {error: 'Invalid Username or Password'});
                 }
@@ -53,20 +27,12 @@ module.exports = {
                     role: 'user',
                     userId: encryptData(result[0].user_id.toString())
                 }
-
-               
-
                 return res.redirect('/')
             })
         }catch(err){
             next(err);
         }
     },
-    
-    userSignupPage: (req, res, next)=>{
-        return res.render('auth/signupPage', {error: null})
-    },
-    
     userSignup: async(req, res, next)=>{
         const error = validationResult(req)
         const { body } = req
@@ -114,8 +80,16 @@ module.exports = {
         }
 
     },
+    changePassword: async(req,res)=>{
+
+    },
+    forgotPassword: async(req,res)=>{
+
+    },
+    resetPassword: async(req,res)=>{
+
+    },
     userLogout: (req, res, next)=>{
-        res.session = null
-        res.redirect('/');
+        
     }
 }
