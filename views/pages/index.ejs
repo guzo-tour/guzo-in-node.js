@@ -9,7 +9,6 @@
       href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
@@ -55,9 +54,9 @@
      <nav class="nav nav--user">        
           <%  if(isLogged){ %> 
          <a href="view/shared/profile.php" class="nav__el">
-         <img src = "img/users/default.jpg" class='nav__user-img'>
+         <img src = "img/users/<%= user[0].photo%>" class='nav__user-img'>
           </a>
-          <a href="" class="nav__el">Logout</a>
+          <a href="logout" class="nav__el">Logout</a>
           <% } %> 
        <%  if(!isLogged){ %> 
        <a href="/login" class="nav__el">Login</a>

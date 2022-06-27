@@ -5,30 +5,29 @@ const conn = require('../config/DB_Connection')
 const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
 module.exports = {
-    userHomePage: async (req, res, next, results)=>{
-        if(req.cookies){
-      const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-   
-          console.log(decoded);
-            // const query = "SELECT * FROM `users` where `user_id`=?;"
-            // try{
-                
-            //     conn.query(query, decoded.userId, (error, result) => {
-            //       if (error) {
-            //         console.log(error);
-            //         throw error;
-            //       }
 
-            //       res.render("pages/index", {
-            //         isLogged: true,
-            //         msg: `Welcome back user`,
-            //         result: results,
-            //         userResult: result,
-            //       });
-            //     });
-            // }catch(err){
-            //     next(err);
-            // }
+    userHomePage: async (req, res, next, results)=>{
+        if(req.cookies.jwt){
+            const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
+            const query = "SELECT * FROM `user` where `user_id`=?;"
+            try{
+                
+                conn.query(query, decoded.userId, (error, result) => {
+                  if (error) {
+                    console.log(error);
+                    throw error;
+                  }
+
+                  res.render("pages/index", {
+                    isLogged: true,
+                    msg: `Welcome back user`,
+                    result: results,
+                    user: result,
+                  });
+                });
+            }catch(err){
+                next(err);
+            }
         
     }
         else {
@@ -156,8 +155,13 @@ module.exports = {
         }
 
     },
-    userLogout: (req, res, next)=>{
-        res.session = null
-        res.redirect('/');
-    }
+    userLogout: (req, res) => {
+        res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() -10 * 1000),
+        httpOnly: true
+  });
+  res.redirect("/");
+  
+
+}
 }

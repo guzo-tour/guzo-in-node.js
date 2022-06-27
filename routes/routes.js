@@ -7,12 +7,13 @@ const {
   userLoginPage,
   userSignup,
   userLogin,
+  userLogout,
 } = require("../controller/authController");
 const { validationRules } = require("../lib/validation_rules");
-Router
-  .get("/signup", userSignupPage)
+Router.get("/signup", userSignupPage)
   .post("/signup", validationRules[1], userSignup)
   .get("/login", userLoginPage)
+  .get("/logout", userLogout)
   .post("/login", validationRules[0], userLogin)
   .get("/", homePage);
     Router.get("/detail", detail, (req, res) => {});  
