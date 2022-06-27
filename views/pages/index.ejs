@@ -58,21 +58,34 @@
  </header>
  <div class="home" id="home">
         <div class="content">
-            <h3>GUZO TOUR</h3>
-            <p>discover new place with us, adventure awaits</p>
+            <h3>Guzo Tour</h3>
+            <p>discover new place with us</p>
             <a href="#" class="btn">discover more</a>
         </div>
         <div class="controls">
-            <span class="vid-btn active" data-src="multimedia/video/hawassa.mp4"></span>
-            <span class="vid-btn" data-src="multimedia/video/afar.mp4"></span>
-            <span class="vid-btn" data-src="multimedia/video/afar2.mp4"></span>
-            <span class="vid-btn" data-src="multimedia/video/gondar.mp4"></span>
-            <span class="vid-btn" data-src="multimedia/video/lalibela.mp4"></span>
+            <span class="vid-btn active" data-src="/video/hawassa.mp4"></span>
+            <span class="vid-btn" data-src="/video/afar.mp4"></span>
+            <span class="vid-btn" data-src="/video/afar2.mp4"></span>
+            <span class="vid-btn" data-src="/video/gondar.mp4"></span>
+            <span class="vid-btn" data-src="/video/lalibela.mp4"></span>
         </div>
         <div class="video-container">
-            <video src="hawassa.mp4" id="video-slider" loop autoplay muted></video>
+            <video src="./video/hawassa.mp4" id="video-slider" loop autoplay muted></video>
         </div>
 </div>
+<div class = 'book'>
+            <h1 class="heading">
+                <span>b</span>
+                <span>o</span>
+                <span>o</span>
+                <span>k</span>
+                <span class="space"></span>
+                <span>n</span>
+                <span>o</span>
+                <span>w</span>
+            </h1>
+</div>
+
     <section class="overview" id="overview">
       <div class="card-container">
 <%  for(var data=0; data<result.length;data++){ %>
@@ -122,8 +135,8 @@
           <p class="card__ratings">
             <span class="card__footer-value"><%= result[data].rating %> </span>
             <span class="card__footer-text">rating (<%= result[data].rating_quantity %>)</span>
-          </p>
-        <a href="" class="btn btn--green btn--small">Details</a>
+          </p> <details</details>
+        <a href="detail?tour_id=<%=result[data].tour_id%> " class="btn btn--green btn--small">Details</a>
         </div>
       </div>
 
