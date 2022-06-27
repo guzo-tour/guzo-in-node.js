@@ -106,7 +106,7 @@ module.exports = {
                 }
                 req.session.user = {
                     role: 'user',
-                    userId: encryptData(rows.insertId.toString())
+                    userId: rows.insertId
                 }
                 res.redirect('/')
             });		
