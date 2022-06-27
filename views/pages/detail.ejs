@@ -60,7 +60,7 @@
               <svg class="overview-box__icon">
                 <use xlink:href="./img/icons.svg#icon-calendar"></use>
               </svg>
-              <span class="overview-box__label">Start At  </span>
+              <span class="overview-box__label">Start At <%= result[0].start_date %>  </span>
               <span class="overview-box__text"> </span>
             </div>
             <div class="overview-box__detail">
@@ -307,6 +307,7 @@
 
      
     </section>
+      <%- include('../partials/footer'); -%>
 
  
   </body>

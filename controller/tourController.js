@@ -7,8 +7,13 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   homePage: (req, res, next) => {
+    const filter=req.body;
+      console.log(filter);
+
+    if(filter){
+      console.log(filter);
+    }
     const sql ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
-      
     const data = conn.query(sql, function (err, result, fields) {
       if (err) throw err;
       userHomePage(req, res, next, result)

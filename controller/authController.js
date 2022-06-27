@@ -6,18 +6,16 @@ const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
 module.exports = {
 
-    userHomePage: async (req, res, next, results)=>{
+userHomePage: async (req, res, next, results)=>{
         if(req.cookies.jwt){
             const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
             const query = "SELECT * FROM `user` where `user_id`=?;"
             try{
-                
                 conn.query(query, decoded.userId, (error, result) => {
                   if (error) {
                     console.log(error);
                     throw error;
                   }
-
                   res.render("pages/index", {
                     isLogged: true,
                     msg: `Welcome back user`,
@@ -38,6 +36,7 @@ module.exports = {
                });
         }
     },
+
     userLoginPage: (req, res)=>{
         return res.render('auth/loginPage', {error: null})        
     },
@@ -80,9 +79,6 @@ module.exports = {
               
 
                 res.cookie("jwt", token, cookieOptions);
-                
-    
-
                 return res.redirect('/')
             })
         }catch(err){
@@ -128,16 +124,13 @@ module.exports = {
                 
                 if (rows.affectedRows !== 1) {
                     return res.render('auth/signupPage', 
-                                        {error: 'Your registration has failed.'});
+                     {error: 'Your registration has failed.'});
                 }
-
                 const user = {
                   role: "user",
                   userId:rows.insertId,
                 };
-
                 const token = signToken(user);
-
                 const cookieOptions = {
                   expires: new Date(
                     Date.now() +
@@ -145,9 +138,7 @@ module.exports = {
                   ),
                   httpOnly: true,
                 };
-
                 res.cookie("jwt", token, cookieOptions);
-                
                 res.redirect('/')
             });		
         }catch(err){
