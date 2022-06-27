@@ -18,6 +18,7 @@ module.exports = {
                     if(result.length == 0){
                         res.render('pages/index', {isLogged: false, msg: null})
                     }
+
                     res.render('pages/index', {isLogged: true, msg: `Welcome back user`})
                 })
             }catch(err){
@@ -46,13 +47,16 @@ module.exports = {
                     throw err
                 }
 
-                if(result.length == 0){
+                if(result.length == 0 || await decryptData(result[0].pwd != body.password)){
                     return res.render('auth/loginPage', {error: 'Invalid Username or Password'});
                 }
                 req.session.user = {
                     role: 'user',
                     userId: encryptData(result[0].user_id.toString())
                 }
+
+               
+
                 return res.redirect('/')
             })
         }catch(err){

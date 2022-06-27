@@ -4,14 +4,16 @@ const { validationRules } = require("express");
 
 module.exports = {
   homePage: (req, res) => {
-    const sql =
-      "SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
+    const sql ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
+      req
     const data = conn.query(sql, function (err, result, fields) {
       if (err) throw err;
       res.status(200);
       res.render("pages/index", { result});
     });
   },
+
+
   detail: (req, res) => {
     const id=req.query.tour_id;
     sql ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.tour_id=?";
