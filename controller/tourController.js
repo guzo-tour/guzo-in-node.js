@@ -1,15 +1,15 @@
 const sessions = require("express-session");
 const conn = require("../config/DB_Connection");
 const { validationRules } = require("express");
+const {userHomePage} = require('./authController')
 
 module.exports = {
-  homePage: (req, res) => {
+  homePage: (req, res, next) => {
     const sql ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
-      req
+      
     const data = conn.query(sql, function (err, result, fields) {
       if (err) throw err;
-      res.status(200);
-      res.render("pages/index", { result});
+      userHomePage(req, res, next, result)
     });
   },
 
