@@ -23,12 +23,8 @@ module.exports = {
          if (err) throw err;
            conn.query(count, id, function (err, count, fields) {
              if (err) throw err;
-
-             res.render("pages/detail", { result, result2,cout });
+             res.render("pages/detail", { result, result2,count });
            });
-   
-
-       
        });
    
      })

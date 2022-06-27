@@ -1,9 +1,6 @@
 const sessions = require('express-session')
-
 const { validationResult } = require('express-validator')
-
 const {encryptData, decryptData} = require('../lib/modules')
-
 const conn = require('../config/DB_Connection')
 
 module.exports = {
@@ -38,7 +35,7 @@ module.exports = {
         if (!error.isEmpty()) {
             console.log(error)
             return res.render('auth/loginPage', {error: error.array()[0].msg
-            });
+            }); 
         }
         try{
             let query = 'select * from `user` where `username`=?';
