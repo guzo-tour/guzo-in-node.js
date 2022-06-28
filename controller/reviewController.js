@@ -22,7 +22,7 @@ module.exports = {
   editReview: async(req,res)=>{
     const review = req.body.review;
     const rating = req.body.rating
-    const userId = req.user.userId;
+    const userId = req.user.user_id;
     const tourId = req.params.tourId;
     const query = "update review set review = ? , rating = ? where user_id = ? and tour_id = ? ";
     conn.query(query, [review,rating,userId,tourId], (error, row)=>{

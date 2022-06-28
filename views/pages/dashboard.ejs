@@ -10,10 +10,10 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/adminStyle.css" />
-    <link rel="stylesheet" href="css/rate_style.css" />
-    <link rel="shortcut icon" type="image/png" href="./img/favicon.png" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/adminStyle.css" />
+    <link rel="stylesheet" href="../css/rate_style.css" />
+    <link rel="shortcut icon" type="../image/png" href="../img/favicon.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
@@ -33,14 +33,23 @@
     <title>Guzo Tour</title>
   </head>
 <body style="min-height:100vh;">
-      <%- include('../partials/header'); -%>
-  
+<header class="header">
+  <nav class="nav nav--tours">
+          <a href="index.php" class="nav__el">All tours</a>
+          <li class="hov">  <button class="nav__search-btn">
+           
+    </nav>
+      <div class="header__logo">
+        <img src="../img/logo-white.png" alt="Natours logo" />
+      </div>
+      <nav class="nav nav--user">
+        <a href="logout" class="nav__el">logout</a>
+       
+      </nav>
+ </header>
   <div class="mainProfile ">
-
-
     <div class="profileImg w-[21rem] ">
   <div class=" ">
-
  
     <ul class = 'flex flex-col '>
       <li>
@@ -90,30 +99,34 @@
     <div class="tourTotalIfo">
 
       <div class="TotalTour flex items-center flex-col w-[230px] ">
-        <h1 class = 'text-4xl flex items-center font-bold text-black'> <i class="fa-solid fa-van-shuttle text-green-400"></i> Total Tour</h1> <h1 class = 'text-2xl text-green-500 font-semibold '><?php echo "$total  Tour are active";  ?></h1>
+        <h1 class = 'text-4xl flex items-center font-bold text-black'> <i class="fa-solid fa-van-shuttle text-green-400"></i> Total Tour</h1>
+         <h1 class = 'text-2xl text-green-500 font-semibold '> <%= result.length %>  total  Tour are active</h1>
      </div>
      
      <div class="TotalTour flex items-center flex-col w-[230px]">
         <h1 class = 'text-4xl flex items-center font-bold text-black'><i class="fa-brands fa-servicestack text-green-400"></i>Total book space</h1>
-        <h1 class = 'text-2xl text-green-500 font-semibold '><?php echo "$totalbookspace  applicants can apply";  ?></h1>
+        <h1 class = 'text-2xl text-green-500 font-semibold '>
+        <%var total=0; for(var i=0;i<result.length;i++){total+=result[0].group_size} %> 
+        <%=total %>  applicants can apply</h1>
      </div>
       <div class="TotalTour flex items-center flex-col w-[230px]">
         <h1 class = 'text-4xl flex items-center font-bold text-black'> <i class="fa-solid fa-people-group text-green-400"></i>Total Applicant</h1>
-        <h1 class = 'text-2xl text-green-500 font-semibold '><?php echo "$count applicants applied" ?></h1>
+        <h1 class = 'text-2xl text-green-500 font-semibold '>  <%= result2[0].count %> applicants applied</h1>
       </div>
        <div class="TotalTour flex items-center flex-col w-[230px]">
           <h1 class = 'text-4xl flex items-center font-bold text-black'><i class="fa-solid fa-hourglass text-green-400"></i>Remaining Book space</h1>
-          <h1 class = 'text-2xl text-green-500 font-semibold '><?php $remain= $totalbookspace-$count
-      ;  echo "$remain space remain" ?></h1>
+          <h1 class = 'text-2xl text-green-500 font-semibold '><%= total- result2[0].count %> 
+      remain space remain"</h1>
 
       </div>
        <div class="TotalTour flex items-center flex-col w-[230px]">
         <h1 class = 'text-4xl flex items-center font-bold text-black'><i class="fa-solid fa-door-open text-green-400"></i>Todays customers</h1>
-          <h1 class = 'text-2xl text-green-500 font-semibold '><?php 
-      ;  echo "$countday booking order" ?></h1>
+          <h1 class = 'text-2xl text-green-500 font-semibold '> 
+     0 booking order</h1>
       </div>
      
     </div>
+  <div></div></div>
     
     <div class="tourGraph">  
      <table id="keywords" cellspacing="0" cellpadding="0">
@@ -121,8 +134,8 @@
       <tr>
         <th><span>Tour Name</span></th>
         <th><span>Group Size</span></th>
-        <th><span>Applicants </span></th>
-        <th><span>Remain</span></th>
+        <th><span>Region </span></th>
+        <th><span>Town</span></th>
         <th><span>price</span></th>
         <th><span>Duration</span></th>
         <th><span>Start data</span></th>
@@ -131,17 +144,18 @@
       </tr>
     </thead>
     <tbody>
-    
-   
+     
+     <% for(var data=0;data<result.length;data++){ %>
+     <%  var date=result[data].start_date.toString().split("00"); %> 
     <tr>
-        <td class="lalign">$tour_name</td>
-        <td>$group_size</td>
-        <td> $count</td>
-        <td>$remain</td> 
-        <td>$price ETB</td>
-        <td> $duration days</td>
-        <td>$date</td>
-        <td> <a class="edit" href="editTour.php?id=$tour_id">EDIT</a></td>
+        <td class="lalign"><%=result[data].tour_name %> </td>
+        <td><%=result[data].group_size %> </td>
+        <td><%=result[data].region %> </td>
+        <td><%=result[data].town %></td> 
+        <td><%=result[data].price %></td>
+        <td> <%=result[data].duration %></td>
+        <td><%=date[0] %></td>
+        <td> <a class="edit" href="/editTour/?id=$tour_id">EDIT</a></td>
         <td class = 'flex items-right flex-col'> <a class="flex items-right flex-col justify-right" href="editTour.php?id=$tour_id">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" fill="none" viewBox="0 0 24 24" 
           stroke="currentColor" stroke-width="2">
@@ -149,7 +163,9 @@
         </svg>
         </a></td>
       </tr>
-  
+   
+    <% } %> 
+
        
   </table>
 
@@ -169,9 +185,9 @@
     <div>
     <div class="xbtn"><button>X</button></div>
      <div class="imgSize">
-             
-       <img class='imags' src = "">
-       
+                 
+      <img class='imags' src = "../img/users/">
+      
         <div class="up">
         </div>
    </div>
@@ -190,16 +206,16 @@
   <form action="#"  method="post">
           <div>
             
-   <p>First Name:   <?php  $first_name="<input class='editInput' name='first_name' type='text' value='$first_name' disabled=true>";
-      echo $first_name ?> </p>
-     <p>Last Name: <?php  $last_name="<input class='editInput' name='last_name' type='text' value='$last_name' disabled=true>";
-      echo $last_name ?> </p>
+   <p>First Name:    <input class='editInput' name='first_name' type='text' value='$first_name' disabled=true>";
+    </p>
+     <p>Last Name:  <input class='editInput' name='last_name' type='text' value='$last_name' disabled=true>";
+       </p>
     
-    <p>Phone: <?php  $phone_number="<input name='phone' class='editInput' type='text' value='$phone_number' disabled=true>";
-      echo $phone_number?>  </p>
-       <p>email:  <?php  $email="<input name='email' class='editInput' type='text' size='27' value='$email' disabled=true>";
-      echo "  ".$email?>  </p>
-        <p> username:<?php echo $user_name ?> </p>
+    <p>Phone:   <input name='phone' class='editInput' type='text' value='$phone_number' disabled=true>";
+        </p>
+       <p>email:   <input name='email' class='editInput' type='text' size='27' value='$email' disabled=true>";
+       </p>
+        <p> username:  </p>
         <button class="upload disabler uploads" id="goto-edit-profile">Edit Profile</button>
         <input class="upload editProfile"  type="submit" name="edit" value="Save" id="">
       </div>
@@ -207,13 +223,9 @@
     </form>
 
    
-    <!-- <?php
- 
-
- 
- ?> -->
+   
      
-<   </div>
+  </div>
    
     
   </div>
@@ -228,7 +240,7 @@
 </style>
 
   
-  <script src="javascript/ap.js"></script>
+<script src="javascript/ap.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <!-- <script src="javascript/ap.js"></script> -->
 <script>

@@ -11,7 +11,8 @@ module.exports = {
     homePage: (req, res, next)=>{
          
             try {
-              var query = "select * from `tour`";
+              var query =
+                "SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id ";
               if (req.query.searchBy && req.query.search_query) {
                 if (req.query.searchBy == "<=" || req.query.searchBy == ">=") {
                   query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.price ${req.query.searchBy}${req.query.search_query}`;
@@ -103,20 +104,53 @@ module.exports = {
     dashBoardPage: (req,res)=>{
 
     },
+
+
     userProfilePage: (req, res, next)=>{
-      user = req.user
-      const query = 'select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;'
-      try{
-        conn.query(query, user.user_id, (err, result)=>{
-          if(err){
-            console.log(err)
-            return res.redirect('/error')
-          }
-          return res.render('pages/profilePage', { user, tours: result, message: ''})
+      user = req.user;
+      if(user.role=="admin"){
+         const query =
+           "select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;";
+         try {
+           conn.query(query, user.user_id, (err, result) => {
+             if (err) {
+               console.log(err);
+               return res.redirect("/error");
+             }
+             return res.render("pages/profilePage", {
+               user,
+               tours: result,
+               message: "",
+             });
+           });
+         } catch (err) {
+           next(err);
+         }  
+        
+      }
+
+      else{
+       const query ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
+       const query2 = "SELECT COUNT(*) AS count FROM booking;";
+       conn.query(query,(err,result)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+           conn.query(query2,(err,result2)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+        
+         return res.render("pages/dashboard", { user, result, result2 });
+        
         })
-      }catch(err){
-        next(err)
-      }  
+
+       })
+      
+      }
+    
     },
     editProfile: (req, res, next)=>{
       const { user } = req
@@ -152,12 +186,29 @@ module.exports = {
       }
     },
     addTourPage: async(req,res)=>{
-
+      return res.render('admin/addTour', {error: null})
     },
     editTourPage: async(req,res)=>{
+<<<<<<< HEAD
 
     },
     forgotPassword: (req, res, next)=>{
       res.render('pages/resetpassPage', {message: "Enter your email address and we'll send you an email with instructions to reset your password."})
+=======
+      const tourId = req.query.tourId;
+      sql =`SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.tour_id= ${tourId}`;
+      conn.query(sql, (error, tours)=>{
+        if(error){
+          console.log(error.message);
+           return res.render('pages/404',{errorMessage:error.sqlMessage});
+        } 
+        else{
+          return res.render('admin/editTour', {tour: tours[0], error: null,isLogged:true,user:req.user})
+        }
+      })
+>>>>>>> 7484a8b9cdb44583b9989551d01167c5a5b09039
     }
+    // errorPage: async(req,res)=>{
+    //   return res.render('pages/404');
+    // }
 }

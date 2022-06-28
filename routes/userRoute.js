@@ -18,7 +18,13 @@ router
   .get("/logout", userLogout)
   .get('/profile',isLoggedIn, userProfilePage)
   .post('/editprofile', validationRules[2], isLoggedIn, editProfile)
+<<<<<<< HEAD
   .get("/forgotPassword", isNotLoggedin, forgotPassword)
   .post("/resetPassword", validationRules[3], isNotLoggedin,resetPassword, reset);
 module.exports = router;
 
+=======
+  // .post("/forgotPassword", forgotPassword)
+  // .patch("/resetPassword", resetPassword);
+module.exports = router;
+>>>>>>> 7484a8b9cdb44583b9989551d01167c5a5b09039

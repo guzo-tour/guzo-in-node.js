@@ -10,7 +10,7 @@ module.exports = {
     userHomePage: async (req, res, next, results,filter)=>{
         if(req.cookies.jwt){
             const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-            const query = "SELECT * FROM `user` where `user_id`=?;"
+            const query = "SELECT * FROM user where user_id=?;"
             try{
                 conn.query(query, decoded.userId, (error, result) => {
                   if (error) {
@@ -18,7 +18,7 @@ module.exports = {
                   }
                   res.render("pages/index", {
                     isLogged: true,
-                    msg: `Welcome back user`,
+                    msg: "Welcome back user",
                     result: results,
                     user: result,
                     filter
@@ -51,7 +51,7 @@ module.exports = {
             }); 
         }
         try{
-            let query = 'select * from `user` where `username`=?';
+            let query = 'select * from user where username=?';
             conn.query(query, body.user_name, async(err, result)=>{
                 if (err)
                 {
@@ -99,9 +99,8 @@ module.exports = {
             return res.render('auth/signupPage', {error: error.array()[0].msg
             });
         }
-
         try{
-            let query = "SELECT * FROM `user` WHERE `username`=?";
+            let query = "SELECT * FROM user WHERE username=?";
             conn.query(query, [body.user_name], async(error, row)=>{
                 if (error)
                 {
@@ -115,7 +114,7 @@ module.exports = {
             })
             
             const hashedPass = await encryptData(body.password)
-            query = 'insert into `user`(`first_name`, `last_name`, `email`, `username`, `pw`, `phone_number`) values(?,?,?,?,?,?)'
+            query = 'insert into user(first_name, last_name, email, username, pw, phone_number) values(?,?,?,?,?,?)'
             conn.query(query, [body.first_name, body.last_name, body.email, body.user_name, hashedPass, body.phone], async (error, rows)=>{
                 if(error)
                 {
@@ -140,7 +139,7 @@ module.exports = {
                 };
                 res.cookie("jwt", token, cookieOptions);
                 res.redirect('/')
-            });		
+            });    
         }catch(err){
             next(err);
         }
@@ -157,6 +156,7 @@ module.exports = {
     resetPassword: (req, res, next)=>{
         const { body } = req
 
+<<<<<<< HEAD
         const error = validationResult(req)
 
         if(!error.isEmpty()){
@@ -198,3 +198,7 @@ module.exports = {
         console.log(mailSent) 
     }
 }
+=======
+}
+}
+>>>>>>> 7484a8b9cdb44583b9989551d01167c5a5b09039

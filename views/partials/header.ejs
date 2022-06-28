@@ -9,11 +9,11 @@
         <img src="img/logo-white.png" alt="Guzo tour logo" />
       </div>
       <nav class="nav nav--user">
-        
+  
      <nav class="nav nav--user">        
           <%  if(isLogged){ %> 
          <a href="view/shared/profile.php" class="nav__el">
-         <img src = "img/users/<%= user[0].photo %> " class='nav__user-img'>
+         <img src = "img/users/<%= user.photo %> " class='nav__user-img'>
           </a>
           <a href="logout" class="nav__el">Logout</a>
           <% } %> 
