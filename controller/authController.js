@@ -1,6 +1,7 @@
 const sessions = require('express-session')
 const { validationResult } = require('express-validator')
-const {encryptData, decryptData,signToken} = require('../lib/modules')
+const crypto = require('crypto')
+const {encryptData, decryptData,signToken, sendEmail} = require('../lib/modules')
 const conn = require('../config/DB_Connection')
 const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
@@ -9,7 +10,7 @@ module.exports = {
     userHomePage: async (req, res, next, results,filter)=>{
         if(req.cookies.jwt){
             const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
-            const query = "SELECT * FROM `user` where `user_id`=?;"
+            const query = "SELECT * FROM user where user_id=?;"
             try{
                 conn.query(query, decoded.userId, (error, result) => {
                   if (error) {
@@ -17,7 +18,7 @@ module.exports = {
                   }
                   res.render("pages/index", {
                     isLogged: true,
-                    msg: `Welcome back user`,
+                    msg: "Welcome back user",
                     result: results,
                     user: result,
                     filter
@@ -50,7 +51,7 @@ module.exports = {
             }); 
         }
         try{
-            let query = 'select * from `user` where `username`=?';
+            let query = 'select * from user where username=?';
             conn.query(query, body.user_name, async(err, result)=>{
                 if (err)
                 {
@@ -98,9 +99,8 @@ module.exports = {
             return res.render('auth/signupPage', {error: error.array()[0].msg
             });
         }
-
         try{
-            let query = "SELECT * FROM `user` WHERE `username`=?";
+            let query = "SELECT * FROM user WHERE username=?";
             conn.query(query, [body.user_name], async(error, row)=>{
                 if (error)
                 {
@@ -114,7 +114,7 @@ module.exports = {
             })
             
             const hashedPass = await encryptData(body.password)
-            query = 'insert into `user`(`first_name`, `last_name`, `email`, `username`, `pw`, `phone_number`) values(?,?,?,?,?,?)'
+            query = 'insert into user(first_name, last_name, email, username, pw, phone_number) values(?,?,?,?,?,?)'
             conn.query(query, [body.first_name, body.last_name, body.email, body.user_name, hashedPass, body.phone], async (error, rows)=>{
                 if(error)
                 {
@@ -139,20 +139,66 @@ module.exports = {
                 };
                 res.cookie("jwt", token, cookieOptions);
                 res.redirect('/')
-            });		
+            });    
         }catch(err){
             next(err);
         }
-
     },
+
     userLogout: (req, res) => {
         console.log(655)
         res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() -10 * 1000),
         httpOnly: true
-  });
-  res.redirect("/");
-  
+        });
+        res.redirect("/");
+    },
+    resetPassword: (req, res, next)=>{
+        const { body } = req
 
+<<<<<<< HEAD
+        const error = validationResult(req)
+
+        if(!error.isEmpty()){
+            return res.render('pages/resetpassPage', {message: error.array()[0].msg})
+        }
+
+        try{
+            const query = 'select * from `user` where `email`=?;'
+            conn.query(query, body.email, (err, result)=>{
+                if(err){
+                    console.log(err)
+                    return res.redirect('/error')
+                }
+                if(result.length < 1){
+                    return res.render('pages/resetpassPage', {message: 'Unknown email, try again'})
+                }
+                const token = (crypto.randomBytes(20)).toString('hex');
+                const message = 'Please click the following link to recover your password: \n\n'+ 
+                'http://'+ req.headers.host + ':' + process.env.PORT +'/resetPassword?token='+token+'\n\n'+
+                'If you did not request this, please ignore this email.'
+                const subject = 'Recovery Email from Guzo Tour'
+                try{
+                    const ob = sendEmail(body.email, message, subject)
+                    req.mailSent = ob
+                    next()
+                }catch(err){
+                    console.log(err)
+                    return res.redirect('/error')
+                }
+
+            })
+        }catch(err){
+            console.log(err)
+        }
+        console.log(body)
+    },
+    reset: (req, res, next)=>{
+        const { mailSent } = req
+        console.log(mailSent) 
+    }
+}
+=======
 }
 }
+>>>>>>> 7484a8b9cdb44583b9989551d01167c5a5b09039

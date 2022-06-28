@@ -223,6 +223,7 @@ module.exports = {
          
        
         
+<<<<<<< HEAD
         });
       });
     }
@@ -281,3 +282,90 @@ module.exports = {
   addTourPage: async (req, res) => {},
   editTourPage: async (req, res) => {},
 };
+=======
+      }
+
+      else{
+       const query ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
+       const query2 = "SELECT COUNT(*) AS count FROM booking;";
+       conn.query(query,(err,result)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+           conn.query(query2,(err,result2)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+        
+         return res.render("pages/dashboard", { user, result, result2 });
+        
+        })
+
+       })
+      
+      }
+    
+    },
+    editProfile: (req, res, next)=>{
+      const { user } = req
+      const {body} = req
+      let query = 'select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;'
+      try{
+        conn.query(query, user.user_id, (err, result)=>{
+          if(err){
+            console.log(err)
+            return res.redirect('/error')
+          }
+          query = 'update `user` set `first_name`=?, `last_name`=?, `phone_number`=? where user_id=?;'
+          const error = validationResult(req)
+          if(!error.isEmpty()){
+            return res.render('pages/profilePage', { user, tours: result, message: error.array()[0].msg})
+          }
+          conn.query(query, [body.first_name, body.last_name, body.phone, user.user_id], (err, rows)=>{
+            if(err){
+              console.log(err)
+              return res.redirect('/error')
+            }
+            if(rows.affectedRows < 1){
+              return res.render('pages/profilePage', { user, tours: result, message: 'Unable to update profile, Try again'})
+            }
+            user.first_name = body.first_name
+            user.last_name = body.last_name
+            user.phone_number = body.phone
+            return res.render('pages/profilePage', { user, tours: result, message: 'successfully edited profile'})
+          })
+        })
+      }catch(err){
+        next(err)
+      }
+    },
+    addTourPage: async(req,res)=>{
+      return res.render('admin/addTour', {error: null})
+    },
+    editTourPage: async(req,res)=>{
+<<<<<<< HEAD
+
+    },
+    forgotPassword: (req, res, next)=>{
+      res.render('pages/resetpassPage', {message: "Enter your email address and we'll send you an email with instructions to reset your password."})
+=======
+      const tourId = req.query.tourId;
+      sql =`SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.tour_id= ${tourId}`;
+      conn.query(sql, (error, tours)=>{
+        if(error){
+          console.log(error.message);
+           return res.render('pages/404',{errorMessage:error.sqlMessage});
+        } 
+        else{
+          return res.render('admin/editTour', {tour: tours[0], error: null,isLogged:true,user:req.user})
+        }
+      })
+>>>>>>> 7484a8b9cdb44583b9989551d01167c5a5b09039
+    }
+    // errorPage: async(req,res)=>{
+    //   return res.render('pages/404');
+    // }
+}
+>>>>>>> 0c8c4c077bf89314a32586674ac73640f25a5f4b

@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="shortcut icon" type="image/png" href="../../multimedia/img/favicon.png" />
+
+    <title>Guzo Tour</title>
+  </head>
+<body>
+    <%- include('../partials/header'); -%>
+    <style>
+        /* body{
+            font-size: 30px;
+            font-weight: 500;
+            background-color: white;
+            color: blue;
+        }
+        form#add-tour-form{
+            width: 45%;
+            margin: auto;
+        }
+        #data{
+            width: 50%;
+
+        }
+        form#change{
+            width: 45%;
+            margin-right: 0px;
+            position: absolute;
+            left:800px;
+            top:200px; */
+        /* } */
+    </style>
+<body>
+    <div class="section-reviewsss"></div>
+    <div id="edit-tour"  >
+
+            <form method="post" class="tourInfo" action="/tour/<%= tour.tour_id%>" >
+                <div class="mainTour">
+                <div><label for="tour_name">Name</label><input   name="tour_name" id="tour_name" value="<%= tour.tour_name%>"  type="text"></div>
+                <div><label for="duration">Duration</label><input   name="duration" id="duration" value="<%= tour.duration%>"  type="text"></div>
+                <div><label for="group">Group size</label><input   name="group_size" id="group_size" value="<%= tour.group_size%>"  type="number"></div>
+                <div><label for="price">Price</label><input   name="price" id="price" value="<%= tour.price%>"  type="number"></div>
+                <div><label for="discount">Discount Price</label><input   name="discount" id="discount" value="<%= tour.discount%>"  type="number"></div>
+
+            </div>
+            <div class="mainTour">
+                <div><label for="region">Region</label><input   name="region" id="region" value="<%= tour.region%>"  type="text"></div>
+                <div><label for="town">Town</label><input   name="town" id="town" value="<%= tour.town%>"  type="text"></div>
+                <div><label for="summary">summary</label><textarea id="story" name="summary" rows="5" cols="60"><%= tour.summary%>
+                </textarea>
+                </div><button id="submit" class="upload" type="submit" name = "form2" >submit</button> <div class="error-message"><h1><%=error%></h1></h1></div></div>
+                <div>
+                </div>
+                </form>
+
+            <div class="uploadImage">
+              
+              <div class="form1">
+                <form  method="POST" action="#" enctype="multipart/form-data" id = "photo">
+                  <input type="file" name="uploadfile"  id = "fileupload1" style = "display:none"value="" required/>
+                  
+                  <div>
+                    <button class="imbtn" type="submit" name="upload" value ="true" id = "filee" onclick = "diplayImageForm('filee')" >Upload Cover <br> Image</button>
+                  </div>
+                  <div>
+                    <button class="imbtn" type="submit" name="upload1" value ="true" style = "display:none" id = "filebtn1" >Submit Cover</button>
+                  </div>
+                </form> 
+              </div>
+              <div class="form2">
+                
+                
+                <form  method="POST" action="#" enctype="multipart/form-data" id = "photo">
+                  <input type="file" name="uploadfile"  id = "fileupload2" style = "display:none"value="" required/>
+                  
+                  <div>
+                    <button class="imbtn" type="submit" name="upload" value ="true" id = "fileee" onclick = "diplayImageForm('fileee')" >Upload Image</button>
+                  </div>
+                  <div>
+                    <button class="imbtn" type="submit" name="upload2" value ="true" style = "display:none" id = "filebtn2" >Submit Image</button>
+                  </div>
+                </form> 
+              </div>
+            </div>
+          </div>
+          <div>
+            </div>
+            <div class="section-reviewss"></div>
+            <%- include('../partials/footer'); -%>
+        
+            <script>
+     function diplayImageForm(id){
+    document.getElementById(id).style.display = "none";
+      if(id=='filee'){
+        document.getElementById('fileupload1').click();
+        document.getElementById('filebtn1').style.display = "block";
+      }
+      else if(id=='fileee'){
+        document.getElementById('fileupload2').click();
+        document.getElementById('filebtn2').style.display = "block";
+      }
+}
+
+  </script>
+
+    <style>
+#summary{
+width: 00px;
+height: 200px;
+
+}
+.uploadImage{
+display: flex;
+margin-top: 30px;
+
+}
+
+.imbtn{
+    background-color:#7dd56f;
+
+}
+
+.form2, .form1{
+  margin-left: 40px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color:#7dd56f;
+
+
+}
+.mainTour{
+width: 30%;
+margin-top: 80px;
+margin-left: 80px;
+display: flex;
+flex-direction: column;
+
+}
+.tourInfo{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.mainTour div{
+    display: flex;
+    justify-content: space-between;
+   width: 100%;
+   margin-bottom: 10px;
+
+
+
+}
+.upload{
+ background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+ padding: 7px;
+ border-radius: 4px;
+ border: #7dd56f solid 2px;
+ width: 100px;
+}
+
+.section-reviewss {
+  margin-top: 0px;
+  width: 100%;
+  height: 20vh;
+  position: relative;
+  z-index: 1000;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right bottom,
+    from(#7dd56f),
+    to(#28b487)
+  );
+  background: linear-gradient(to right bottom, #7dd56f, #28b487);
+  clip-path:polygon(100% 100%, 100% 0, 0 100%);;
+  -webkit-clip-path:polygon(100% 100%, 100% 0, 0 100%);;
+}
+
+.section-reviewsss {
+  margin-top: 0px;
+  width: 100%;
+  height: 20vh;
+  position: relative;
+  z-index: 1000;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right bottom,
+    from(#7dd56f),
+    to(#28b487)
+  );
+  background: linear-gradient(to right bottom, #7dd56f, #28b487);
+  clip-path:polygon(100% 0, 0 0, 0 100%);
+  -webkit-clip-path:polygon(100% 0, 0 0, 0 100%);;
+}
+#edit-tour{
+    height: 48vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ background-color:rgb(230, 230, 230);
+
+    /* align-items: center; */
+}
+ p,a,.names,input,button,label,textarea{
+  border: none;
+  outline: none;
+  font-size: 20px;
+  color: #444;
+  font-weight:600;
+}
+input{
+  padding: 10px;
+}
+label{
+    margin: 0 10px;
+}
+    </style>
+</body>
+</html>
