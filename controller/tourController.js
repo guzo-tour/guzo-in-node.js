@@ -71,7 +71,6 @@ module.exports = {
         req.flash('success', 'Tour has been deleted');
         res.redirect('../display');
       }
-
 	  });
   }
 }

@@ -8,7 +8,7 @@ module.exports = {
     const rating = req.body.rating
     const userId = req.user.userId;
     const tourId = req.params.tourId;
-
+    
     const query = "inset into review(user_id,tour_id, review, rating) values(?,?,?,?)";
     conn.query(query, [userId,tourId, review,rating], (error, row)=>{
         if(error){

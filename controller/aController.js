@@ -13,20 +13,35 @@ module.exports = {
             }); 
         }
         try{
-            let query = 'select * from `user` where `username`=?';
-            conn.query(query, body.user_name, (err, result)=>{
+            let query = 'select * from user where username=?';
+            conn.query(query, body.user_name, async(err, result)=>{
                 if (err)
                 {
                     console.log(err)
-                    throw err
+                     throw err
                 }
-                if(result.length == 0 || await decryptData(result[0].pwd != body.password)){
-                    return res.render('auth/loginPage', {error: 'Invalid Username or Password'});
+
+                if(result.length == 0 || !(await decryptData(body.password, result[0].pw))){
+                    return res.render('auth/loginPage',  { error: 'Invalid Username or Password'});
                 }
-                req.session.user = {
-                    role: 'user',
-                    userId: encryptData(result[0].user_id.toString())
-                }
+
+                const user = {
+                  role: "user",
+                  userId: result[0].user_id
+                };
+
+                const token = signToken(user);
+
+                const cookieOptions = {
+                    expires: new Date(
+                        Date.now() +
+                        process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000 
+                        ),
+                        httpOnly: true,
+                };
+              
+
+                res.cookie("jwt", token, cookieOptions);
                 return res.redirect('/')
             })
         }catch(err){
@@ -78,7 +93,6 @@ module.exports = {
         }catch(err){
             next(err);
         }
-
     },
     changePassword: async(req,res)=>{
 
