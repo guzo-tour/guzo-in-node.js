@@ -11,7 +11,8 @@ module.exports = {
     homePage: (req, res, next)=>{
          
             try {
-              var query = "select * from `tour`";
+              var query =
+                "SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id ";
               if (req.query.searchBy && req.query.search_query) {
                 if (req.query.searchBy == "<=" || req.query.searchBy == ">=") {
                   query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.price ${req.query.searchBy}${req.query.search_query}`;
@@ -103,20 +104,53 @@ module.exports = {
     dashBoardPage: (req,res)=>{
 
     },
+
+
     userProfilePage: (req, res, next)=>{
-      user = req.user
-      const query = 'select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;'
-      try{
-        conn.query(query, user.user_id, (err, result)=>{
-          if(err){
-            console.log(err)
-            return res.redirect('/error')
-          }
-          return res.render('pages/profilePage', { user, tours: result, message: ''})
+      user = req.user;
+      if(user.role=="admin"){
+         const query =
+           "select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;";
+         try {
+           conn.query(query, user.user_id, (err, result) => {
+             if (err) {
+               console.log(err);
+               return res.redirect("/error");
+             }
+             return res.render("pages/profilePage", {
+               user,
+               tours: result,
+               message: "",
+             });
+           });
+         } catch (err) {
+           next(err);
+         }  
+        
+      }
+
+      else{
+       const query ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
+       const query2 = "SELECT COUNT(*) AS count FROM booking;";
+       conn.query(query,(err,result)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+           conn.query(query2,(err,result2)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+        
+         return res.render("pages/dashboard", { user, result, result2 });
+        
         })
-      }catch(err){
-        next(err)
-      }  
+
+       })
+      
+      }
+    
     },
     editProfile: (req, res, next)=>{
       const { user } = req
