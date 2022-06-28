@@ -5,8 +5,8 @@ const conn = require('../config/DB_Connection')
 const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
 module.exports = {
-
-userHomePage: async (req, res, next, results)=>{
+    userHomePage: async (req, res, next, results)=>{
+        console.log(results)
         if(req.cookies.jwt){
             const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
             const query = "SELECT * FROM `user` where `user_id`=?;"
@@ -14,7 +14,6 @@ userHomePage: async (req, res, next, results)=>{
                 conn.query(query, decoded.userId, (error, result) => {
                   if (error) {
                     console.log(error);
-                    throw error;
                   }
                   res.render("pages/index", {
                     isLogged: true,
@@ -29,17 +28,17 @@ userHomePage: async (req, res, next, results)=>{
         
     }
         else {
-               res.render("pages/index", {
-                 isLogged: false,
-                 msg: `Welcome back user`,
-                 result: results,
-               });
+             res.render("pages/index", {
+               isLogged: false,
+               msg: ``,
+               result: results,
+             });
         }
     },
 
-    userLoginPage: (req, res)=>{
-        return res.render('auth/loginPage', {error: null})        
-    },
+    // userLoginPage: (req, res)=>{
+    //     return res.render('auth/loginPage', {error: null})        
+    // },
 
     userLogin: async(req, res)=>{
         const error = validationResult(req)
@@ -55,7 +54,7 @@ userHomePage: async (req, res, next, results)=>{
                 if (err)
                 {
                     console.log(err)
-                     throw err
+                    return res.render('auth/loginPage',  { error: 'Server error try again'});
                 }
 
                 if(result.length == 0 || !(await decryptData(body.password, result[0].pw))){
@@ -79,7 +78,7 @@ userHomePage: async (req, res, next, results)=>{
               
 
                 res.cookie("jwt", token, cookieOptions);
-                return res.redirect('/')
+                 res.redirect("/");
             })
         }catch(err){
             next(err);
@@ -105,11 +104,11 @@ userHomePage: async (req, res, next, results)=>{
                 if (error)
                 {
                     console.log(error)
-                    throw error
+                    return res.render('auth/signupPage', { error: 'Server error try again'});
                 }
                 
                 if (row.length >= 1) {
-                    return res.render('auth/signupPage', {error: 'This Username already in use.'});
+                    return res.render('auth/signupPage', { error: 'The username is already used'});
                 }
             })
             
@@ -119,12 +118,11 @@ userHomePage: async (req, res, next, results)=>{
                 if(error)
                 {
                     console.log (error);
-                    throw error;
+                    return res.render('auth/signupPage', {error: 'Your registration has failed. Try again'});
                 }
                 
                 if (rows.affectedRows !== 1) {
-                    return res.render('auth/signupPage', 
-                     {error: 'Your registration has failed.'});
+                    return res.render('auth/signupPage', {error: 'Your registration has failed. Try again'});
                 }
                 const user = {
                   role: "user",
@@ -147,6 +145,7 @@ userHomePage: async (req, res, next, results)=>{
 
     },
     userLogout: (req, res) => {
+        console.log(655)
         res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() -10 * 1000),
         httpOnly: true

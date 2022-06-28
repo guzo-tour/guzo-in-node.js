@@ -2,30 +2,28 @@
 const sessions = require('express-session')
 const { validationResult } = require('express-validator')
 const {encryptData, decryptData} = require('../lib/modules')
+const {userHomePage}=require("./authController");
 const conn = require('../config/DB_Connection')
+const { promisify } = require("util");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
     homePage: (req, res, next)=>{
-        const user = req.session
-        if(user != null){
-            const query = 'select * from `user` where `user_id`=?'
-            try{
-                conn.query(query, user.userId, (error, result)=>{
-                    if (error)
-                    {
-                        console.log(err)
-                        throw err
-                    }
-                    if(result.length == 0){
-                        res.render('pages/index', {isLogged: false, msg: null})
-                    }
-
-                    res.render('pages/index', {isLogged: true, msg: `Welcome back user`})
-                })
-            }catch(err){
-                next(err);
-            }
-        }
+    
+      const query = 'select * from `tour`'
+      try{
+        conn.query(query, (error, result)=>{
+          if (error){
+            console.log(err)
+            throw err
+          }        
+        userHomePage(req, res, next, result);
+        })
+      }catch(err){
+        next(err);
+      }
+        
+       
     },
     userLoginPage: (req, res)=>{
         return res.render('auth/loginPage', {error: null})        
@@ -90,8 +88,53 @@ module.exports = {
     dashBoardPage: (req,res)=>{
 
     },
-    userProfilePage: async(req,res)=>{
-
+    userProfilePage: (req, res, next)=>{
+      user = req.user
+      const query = 'select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;'
+      try{
+        conn.query(query, user.user_id, (err, result)=>{
+          if(err){
+            console.log(err)
+            return res.redirect('/error')
+          }
+          return res.render('pages/profilePage', { user, tours: result, message: ''})
+        })
+      }catch(err){
+        next(err)
+      }  
+    },
+    editProfile: (req, res, next)=>{
+      const { user } = req
+      const {body} = req
+      let query = 'select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;'
+      try{
+        conn.query(query, user.user_id, (err, result)=>{
+          if(err){
+            console.log(err)
+            return res.redirect('/error')
+          }
+          query = 'update `user` set `first_name`=?, `last_name`=?, `phone_number`=? where user_id=?;'
+          const error = validationResult(req)
+          if(!error.isEmpty()){
+            return res.render('pages/profilePage', { user, tours: result, message: error.array()[0].msg})
+          }
+          conn.query(query, [body.first_name, body.last_name, body.phone, user.user_id], (err, rows)=>{
+            if(err){
+              console.log(err)
+              return res.redirect('/error')
+            }
+            if(rows.affectedRows < 1){
+              return res.render('pages/profilePage', { user, tours: result, message: 'Unable to update profile, Try again'})
+            }
+            user.first_name = body.first_name
+            user.last_name = body.last_name
+            user.phone_number = body.phone
+            return res.render('pages/profilePage', { user, tours: result, message: 'successfully edited profile'})
+          })
+        })
+      }catch(err){
+        next(err)
+      }
     },
     addTourPage: async(req,res)=>{
 
