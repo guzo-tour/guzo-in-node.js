@@ -8,6 +8,7 @@
 //   userSignup,
 //   userLogin,
 //   userLogout,
+//   homePage
 // } = require("../controller/authController");
 // const { validationRules } = require("../lib/validation_rules");
 // Router.get("/signup", userSignupPage)

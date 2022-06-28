@@ -32,7 +32,7 @@
             </span
           >
         </h1>
-        
+     
         <div class="heading-box__group">
           <div class="heading-box__detail">
             <i class="fa-solid fa-clock"></i>
@@ -272,7 +272,7 @@
             <% if(true){ if(count!=result[0].group_size) { var left= result[0].group_size-count %> 
             <p class="cta__text"><%= result[0].duration %> days 1 adventure. Infinite memories. Make it yours today!</p>
               <p class="cta__text"><%= left %>place left</p>
-               <form action="book/?tour_id=<%= result[0].tour_id %>" method="post"><button name="sub" class="btn btn--green span-all-rows">Book tour now!</button></form>      
+               <form action="/booking/?tour_id=<%= result[0].tour_id %>" method="post"><button name="sub" class="btn btn--green span-all-rows">Book tour now!</button></form>      
             <%  } else{  %>
                 <p class="cta__text" >sorry the is no space for booking</p>
              <%}}%> 
@@ -309,5 +309,5 @@
     </section>
       <%- include('../partials/footer'); -%>
 
- 
+
   </body>

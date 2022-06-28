@@ -1,17 +1,17 @@
 const express = require("express");
 
-const viewsController = require('../controllers/viewsController');
+const viewsController = require('../controller/viewsController');
 //const authController = require('../controllers/authController');
 
 const router = express.Router();
 router.get('/',  viewsController.homePage);
-router.get('/tour/:slug', viewsController.tourDetail);
-router.get('/login', viewsController.login);
-router.get('/signup', viewsController.signup);
-router.get('/dashboard', viewsController.dashboard);
-router.get('/profile', viewsController.profile);
-router.get('/addTour', viewsController.addTour);
-router.get('/editTour', viewsController.editTour);
+router.get('/detail', viewsController.detail);
+router.get('/login', viewsController.userLoginPage);
+router.get('/signup', viewsController.userSignupPage);
+router.get('/dashboard', viewsController.dashBoardPage);
+router.get('/profile', viewsController.userProfilePage);
+router.get('/addTour', viewsController.addTourPage);
+router.get('/editTour', viewsController.editTourPage);
 
 module.exports = router;
 

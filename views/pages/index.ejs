@@ -20,7 +20,7 @@
     <nav class="nav nav--tours">
         <a href="" class="nav__el">All tours</a>
 
-       <form action="/" class="nav__search"  method="get" >
+       <form action="/?filter=true" class="nav__search"  method="get">
         <li class="hov"> 
            <p> Search by</p>
         <ul class="seleter">
@@ -54,7 +54,7 @@
          <a href="view/shared/profile.php" class="nav__el">
          <img src = "img/users/<%= user[0].photo%>" class='nav__user-img'>
           </a>
-          <a href="logout" class="nav__el">Logout</a>
+          <a href="/user/logout" class="nav__el">Logout</a>
           <% } %> 
        <%  if(!isLogged){ %> 
        <a href="/login" class="nav__el">Login</a>
@@ -142,7 +142,7 @@
             <span class="card__footer-value"><%= result[data].rating %> </span>
             <span class="card__footer-text">rating (<%= result[data].rating_quantity %>)</span>
           </p> <details</details>
-        <a href="detail?tour_id=<%=result[data].tour_id%> " class="btn btn--green btn--small">Details</a>
+        <a href="/detail?tour_id=<%=result[data].tour_id%> " class="btn btn--green btn--small">Details</a>
         </div>
       </div>
 
@@ -199,6 +199,14 @@
                 videoSlider.src = e.target.dataset.src
             })
         })
+  var x=document.cookie
+  console.log(x);
+  if(x.booked){
+    alert("booked")
+
+
+  }
+
         </script>
     
   </body>

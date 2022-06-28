@@ -7,17 +7,16 @@ const ejs = require('ejs')
 const sessions = require('express-session');
 const expressValidator = require('express-validator')
 const cookieParser = require('cookie-parser')
-
+const flash=require("connect-flash");
 const app = express()
-const Router = require('./routes/routes')
+//const Router = require('./routes/routes')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');	
 app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
-
-
+app.use(flash());
 const PORT = process.env.PORT || 5050
 
 app.listen(PORT,()=>{
@@ -29,7 +28,7 @@ const userRouter = require('./routes/userRoute');
 const tourRouter = require('./routes/tourRoute');
 const reviewRouter = require('./routes/reviewRoute');
 const bookingRouter = require('./routes/bookingRoute');
-const viewRouter = require('./routes/viewsRoute');
+const viewRouter = require('./routes/viewRoute');
 
 app.use('/', viewRouter);
 app.use('/user',userRouter);
