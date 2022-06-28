@@ -29,17 +29,18 @@ userHomePage: async (req, res, next, results)=>{
         
     }
         else {
-               res.render("pages/index", {
-                 isLogged: false,
-                 msg: "Welcome back user",
-                 result: results,
-               });
+             res.render("pages/index", {
+               isLogged: false,
+               msg: `Welcome back user`,
+               result: results,
+             });
+        
         }
     },
 
-    userLoginPage: (req, res)=>{
-        return res.render('auth/loginPage', {error: null})        
-    },
+    // userLoginPage: (req, res)=>{
+    //     return res.render('auth/loginPage', {error: null})        
+    // },
 
     userLogin: async(req, res)=>{
         const error = validationResult(req)
@@ -79,7 +80,7 @@ userHomePage: async (req, res, next, results)=>{
               
 
                 res.cookie("jwt", token, cookieOptions);
-                return res.redirect('/')
+                 res.redirect("/");
             })
         }catch(err){
             next(err);
@@ -108,7 +109,7 @@ userHomePage: async (req, res, next, results)=>{
                 }
                 
                 if (row.length >= 1) {
-                    return res.render('auth/signupPage', {error: 'This Username already in use.'});
+                    return res.render('auth/signupPage', {error:null});
                 }
             })
             
@@ -146,6 +147,7 @@ userHomePage: async (req, res, next, results)=>{
 
     },
     userLogout: (req, res) => {
+        console.log(655)
         res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() -10 * 1000),
         httpOnly: true

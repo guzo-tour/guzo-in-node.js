@@ -4,13 +4,17 @@ const { validationRules } = require("express");
 
 module.exports = {
   book: async(req,res)=>{
-    const userId = req.user.userId;
-    const tourId = req.params.tourId;
-    const query = "inset into booking(user_id,tour_id) values(?,?)";
+    const userId = req.user.user_id;
+    const tourId = req.query.tour_id;
+   
+    const query = "insert into booking(user_id,tour_id) values(?,?)";
     conn.query(query, [userId,tourId], (error, row)=>{
-        if(error){
-           throw error; 
+        if(error){ 
+     res.cookie("booked", true, 10000);
+    return  res.redirect("/"); 
         } 
+        res.cookie("booked", true, 10000);
+        res.redirect("/");
     })  
   },
   unbook: async(req,res)=>{
@@ -20,6 +24,7 @@ module.exports = {
     conn.query(query, [userId,tourId], (error, row)=>{
         if(error){
            throw error; 
+         
         } 
     })  
   }
