@@ -11,17 +11,29 @@ module.exports = {
     homePage: (req, res, next)=>{
          
             try {
-              var query = "select * from `tour`";
+              var query =
+                "SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id ";
               if (req.query.searchBy && req.query.search_query) {
-            
-               query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE ${req.query.searchBy} LIKE  "%${req.query.search_query}%"`;
-              }
+                if (req.query.searchBy == "<=" || req.query.searchBy == ">=") {
+                  query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.price ${req.query.searchBy}${req.query.search_query}`;
+                } else {
+                  query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE ${req.query.searchBy} LIKE  "%${req.query.search_query}%"`;
+                }
+
+             }
               conn.query(query, (error, result) => {
                 if (error) {
                   throw error;
                 }
+                 if (req.query.searchBy){
+                     userHomePage(req, res, next, result,{filter:true});
+                }
+                else{
+                     userHomePage(req, res, next, result, { filter: false });
 
-                userHomePage(req, res, next, result);
+                }
+                    
+                    
               });
             } catch (error) {
              console.log(error)
@@ -92,8 +104,86 @@ module.exports = {
     dashBoardPage: (req,res)=>{
 
     },
-    userProfilePage: async(req,res)=>{
 
+
+    userProfilePage: (req, res, next)=>{
+      user = req.user;
+      if(user.role=="admin"){
+         const query =
+           "select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;";
+         try {
+           conn.query(query, user.user_id, (err, result) => {
+             if (err) {
+               console.log(err);
+               return res.redirect("/error");
+             }
+             return res.render("pages/profilePage", {
+               user,
+               tours: result,
+               message: "",
+             });
+           });
+         } catch (err) {
+           next(err);
+         }  
+        
+      }
+
+      else{
+       const query ="SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id";
+       const query2 = "SELECT COUNT(*) AS count FROM booking;";
+       conn.query(query,(err,result)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+           conn.query(query2,(err,result2)=>{
+         if (err) {
+           console.log(err);
+           return res.redirect("/error");
+         }
+        
+         return res.render("pages/dashboard", { user, result, result2 });
+        
+        })
+
+       })
+      
+      }
+    
+    },
+    editProfile: (req, res, next)=>{
+      const { user } = req
+      const {body} = req
+      let query = 'select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;'
+      try{
+        conn.query(query, user.user_id, (err, result)=>{
+          if(err){
+            console.log(err)
+            return res.redirect('/error')
+          }
+          query = 'update `user` set `first_name`=?, `last_name`=?, `phone_number`=? where user_id=?;'
+          const error = validationResult(req)
+          if(!error.isEmpty()){
+            return res.render('pages/profilePage', { user, tours: result, message: error.array()[0].msg})
+          }
+          conn.query(query, [body.first_name, body.last_name, body.phone, user.user_id], (err, rows)=>{
+            if(err){
+              console.log(err)
+              return res.redirect('/error')
+            }
+            if(rows.affectedRows < 1){
+              return res.render('pages/profilePage', { user, tours: result, message: 'Unable to update profile, Try again'})
+            }
+            user.first_name = body.first_name
+            user.last_name = body.last_name
+            user.phone_number = body.phone
+            return res.render('pages/profilePage', { user, tours: result, message: 'successfully edited profile'})
+          })
+        })
+      }catch(err){
+        next(err)
+      }
     },
     addTourPage: async(req,res)=>{
       return res.render('admin/addTour', {error: null})

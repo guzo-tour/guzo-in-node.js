@@ -4,17 +4,20 @@ const { validationRules } = require("express");
 
 module.exports = {
   giveReview: async(req,res)=>{
-    const review = req.body.review;
-    const rating = req.body.rating
-    const userId = req.user.user_id;
-    const tourId = req.params.tourId;
-    
-    const query = "inset into review(user_id,tour_id, review, rating) values(?,?,?,?)";
-    conn.query(query, [userId,tourId, review,rating], (error, row)=>{
-        if(error){
-           throw error; 
-        } 
-    })   
+    const {body}=req;
+    console.log(body);
+    const tourId = req.query.tour_id;
+    const query = "insert into review(user_id,tour_id, review, rating) values(?,?,?,?)";
+    conn.query(
+      query,
+      [req.user.user_id, tourId, body.comments, body.rating1],
+      (error, row) => {
+        if (error) {
+        return   res.redirect("/")
+        }
+         res.redirect("/");
+      }
+    );   
   },
   editReview: async(req,res)=>{
     const review = req.body.review;
@@ -26,6 +29,8 @@ module.exports = {
         if(error){
            throw error; 
         } 
+     
+
     })   
   },
   deleteReview: async(req,res)=>{

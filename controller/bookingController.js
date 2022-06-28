@@ -26,6 +26,9 @@ module.exports = {
            throw error; 
          
         } 
+        if(row.affectedRows == 1){
+          res.redirect('/user/profile?user_id=' + userId)
+        }
     })  
   }
 }
