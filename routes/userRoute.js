@@ -20,4 +20,3 @@ router
   // .post("/forgotPassword", forgotPassword)
   // .patch("/resetPassword", resetPassword);
 module.exports = router;
-
