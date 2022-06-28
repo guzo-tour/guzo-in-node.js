@@ -51,7 +51,7 @@
       </div>
      <nav class="nav nav--user">        
           <%  if(isLogged){ %> 
-         <a href="view/shared/profile.php" class="nav__el">
+         <a href="/user/profile?user_id=<%=user[0].user_id%>" class="nav__el">
          <img src = "img/users/<%= user[0].photo%>" class='nav__user-img'>
           </a>
           <a href="/user/logout" class="nav__el">Logout</a>
@@ -70,14 +70,14 @@
             <a href="#" class="btn">discover more</a>
         </div>
         <div class="controls">
-            <span class="vid-btn active" data-src="/video/hawassa.mp4"></span>
-            <span class="vid-btn" data-src="/video/afar.mp4"></span>
-            <span class="vid-btn" data-src="/video/afar2.mp4"></span>
-            <span class="vid-btn" data-src="/video/gondar.mp4"></span>
-            <span class="vid-btn" data-src="/video/lalibela.mp4"></span>
+            <span class="vid-btn active" data-src="video/hawassa.mp4"></span>
+            <span class="vid-btn" data-src="video/afar.mp4"></span>
+            <span class="vid-btn" data-src="video/afar2.mp4"></span>
+            <span class="vid-btn" data-src="video/gondar.mp4"></span>
+            <span class="vid-btn" data-src="video/lalibela.mp4"></span>
         </div>
         <div class="video-container">
-            <video src="./video/hawassa.mp4" id="video-slider" loop autoplay muted></video>
+            <video src="video/hawassa.mp4" id="video-slider" loop autoplay muted></video>
         </div>
 </div>
 <% } %> 

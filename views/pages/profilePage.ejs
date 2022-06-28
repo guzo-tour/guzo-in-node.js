@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link
+        href="https://fonts.googleapis.com/css?family=Lato:300,300i,700"
+        rel="stylesheet"
+        />
+        <link rel="stylesheet" href="../css/style.css"/>
+        <link rel="shortcut icon" type="image/png" href="../img/favicon.png" />
+
+        <title>Guzo Tour | Exciting tours for adventurous people</title>
+    </head>
+    <body>
+        <header class="header">
+            <nav class="nav nav--tours">
+                <a href="/" class="nav__el">All tours</a>
+                <li class="hov">  <button class="nav__search-btn">
+            </nav>
+            <div class="header__logo">
+            <img src="../img/logo-white.png" alt="Natours logo" />
+            </div>
+            <nav class="nav nav--user">
+                <!-- <a href="#" class="nav__el"><?php echo el.booking?></a> -->
+                <!-- </a> -->
+                <a href="/user/logout" class="nav__el">Logout</a>  
+            </nav>
+        </header>
+        <div class="mainProfile">
+            <div class="profileImg">
+                <div>
+                    <div class="imgSize">
+                        <img src="../img/users/<%=user.photo%>" alt="Profile image">
+                    </div> 
+        
+                    <form  method="POST" action="/editprofile" enctype="multipart/form-data" id = "photo">
+                        <input type="file" name="uploadfile"  id = "fileupload" style = "display:none" required/>
+                        <div>
+                            <button type="submit" name="upload" value ="true" id = "filee" class = "upload" onclick = "diplayImageForm('filee')" >UPLOAD</button>
+                        </div>
+                        <div>
+                        <button type="submit" name="upload" value ="true" class = "upload" style = "display:none" id = "filebtn" >Submit</button>
+                        </div>
+                    </form>
+                    <p> Username: <%=user.username%> </p>
+                </div>
+            </div>
+                    
+            <div class="profileInfo">
+                <div>
+                    <div><h2 style="text-align: center; color: red; font-size: 2.5rem; margin: 10px;"><%=message%></h2></div>
+                    <form action="/user/editprofile?user_id=<%=user.user_id%>" name="edit" method="post">
+                        <div class="names">
+                            <span>First Name: </span>  
+                            <input class="editInput" name="first_name" type="text" value="<%=user.first_name%>" disabled=true>
+                            <span>Last Name: </span> 
+                            <input class="editInput" name="last_name" type="text" value="<%=user.last_name%>" disabled=true>
+                        </div>
+                        <p>Phone: 
+                            <input name="phone" class="editInput" type="text" value="<%=user.phone_number%>" disabled=true>
+                        </p>
+                        <p>Email:  
+                            <input name="email" class="editInput" type="text" size="40" value="<%=user.email%>" disabled=true>
+                        </p>
+                        <button class="upload uploads" id="goto-edit-profile">Edit Profile</button>
+                        <input class="upload editProfile"  type="submit" name="edit" id="submitChangeBtn" disabled=true>
+                    </form>
+                    <button class="upload rbtn disablers" id="changepassword"><a href="/forgotpassword">Change Password</a></button>
+                </div>
+            </div>
+            <div class="book-container">
+                <%if(tours.length > 0){%>
+                    <%tours.map(el=>{%>
+
+                    <div class="card" id="tour-<%=el.tour_id%>">
+                        <div class="card__header">
+                            <div class="card__picture">
+                                <div class="card__picture-overlay">&nbsp;</div>
+                                <img src="../img/tours/tour-el.tour_id-cover.jpg" alt="el.tour_id" class="card__picture-img"/>
+                            </div>
+                            <h3 class="heading-tertirary">
+                                <span><%=el.tour_name%></span>
+                            </h3> 
+                        </div>
+                        <div class="card__details">
+                            <h4 class="card__sub-heading">Easy <%=el.duration%></h4>
+                            <p class="card__text">
+                                Breathtaking hike through the Canadian Banff National Park
+                            </p>
+                            <div class="card__data">
+                                <svg class="card__icon">
+                                <i class="fa-solid fa-location-dot"></i><span> <%=el.region%> , <%=el.town%></span>
+                                </svg>
+                            </div>
+                            <div class="card__data">
+                            <i class="fa-solid fa-calendar-days"></i>
+                                <span> <%=el.start%></span>
+                            </div>
+                            <div class="card__data">
+                                <svg class="card__icon">
+                                <use xlink:href="../img/icons.svg#icon-flag"></use>
+                                </svg>
+                                <span>From <%=el.region%> </span>
+                            </div>
+                        <div class="card__data">
+                            <svg class="card__icon">
+                            <use xlink:href="../img/icons.svg#icon-user"></use>
+                            </svg>
+                            <span><%=el.group_size%> people</span>
+                        </div>
+                        </div>
+                
+                        <div class="card__footer">
+                        <p>
+                            <span class="card__footer-value"><%=el.price%> ETB</span>
+                            <span class="card__footer-text">per person</span>
+                        </p>
+                        <p class="card__ratings">
+                            <span class="card__footer-value">4.9</span>
+                            <span class="card__footer-text">rating (21)</span>
+                        </p>
+                        <a href="/cancel_tour?tour_id=<%=el.tour_id%>" class="btn btn--green btn--small" id="cancelBtn">Cancel Tour</a>
+                        </div>
+                    </div>
+                    <%})}%>
+            </div>
+        </div>
+        <script src="../../javascript/profileController.js"></script>
+        <script>
+
+        function diplayImageForm(id){
+        //console.log(2345665);
+            document.getElementById(id).style.display = "none";
+            document.getElementById('filebtn').style.display = "block";
+            document.getElementById('fileupload').click();
+        //  document.getElementById('fileupload').style.display = "inline";
+        }
+
+        var btn=document.getElementById("goto-edit-profile");
+        var inputs = document.querySelectorAll('.editInput');
+        
+        btn.addEventListener('click',function(e){
+            e.preventDefault();
+            document.getElementById('submitChangeBtn').disabled = false;
+            console.log(document.getElementById('submitChangeBtn'))
+            for(var i=0;i<3;i++){
+                inputs[i].disabled=false;
+            }
+        
+        })
+        </script>
+
+        <style>
+            body{
+                background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+            }
+            .mainProfile{
+                padding-top: 20px;
+                display:flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                align-items: center;
+                /* max-height: 85vh; */
+                min-height: 85vh;
+                width: 100%;
+            }
+            a{
+                text-decoration: none;
+            }
+            .names span{
+                margin-left: 20px;
+            }
+            .upload{
+                background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+                padding: 7px;
+                border-radius: 4px;
+                border: #7dd56f solid 2px;
+            }
+
+            .editProfile{
+                position: relative;
+                right: 0px;
+                top: 60px;
+            }
+            .uploads{
+                position: relative;
+                top: 60px;
+            }
+            p,a,.names,input,button{
+                border: none;
+                outline: none;
+                font-size: 20px;
+                color: #444;
+                font-weight:600;
+            }
+            input{
+                padding: 10px;
+            }
+            .profileInfo,.profileImg{
+                height: 60vh;
+                margin-left:2%;
+                background-color:rgb(230, 230, 230);
+                padding: 100px;
+                border-radius: 20px;
+            }
+
+            .profileInfo{
+                display: flex;
+            }
+
+            .profileImg{
+                display: flex;
+            }
+
+            .profileInfo p,.profileImg p{
+                margin: 20px;
+            }
+
+            .imgSize{
+                width: 200px;
+                height:200px;      
+            }
+
+            .disablers{
+                position: relative;
+                left: 30%;
+                margin: 20px;
+            }
+            .imgSize img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                overflow: hidden;
+                border-radius:50%;
+            }
+            .book-container{
+                margin-bottom: 0;
+                width: 100%;
+                background-color: #fff;
+                display: flex;
+                justify-content: center;
+                padding: 35px 25px;
+                margin-top: 25px;
+            }
+            .book-container .card{
+                max-width: 350px;
+                margin: 20px;
+                box-shadow: 0 0 17px #555;
+                border-radius: 15px;
+                overflow: hidden;
+            }
+
+            @media (max-width: 1432px) {
+                header.header{
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .main-profile{
+                    display: flex;
+                    flex-direction: column;
+                    background-color: #fff;
+                }
+                .profileImg{
+                    margin-bottom: 15px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 25px;
+                }
+                .profileInfo{
+                    margin-bottom: 15px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-right: 25px;
+                }}
+        </style>
+    </body>
+</html>

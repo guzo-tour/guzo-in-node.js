@@ -6,7 +6,7 @@ const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
 module.exports = {
 
-userHomePage: async (req, res, next, results,filter)=>{
+    userHomePage: async (req, res, next, results,filter)=>{
         if(req.cookies.jwt){
             const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
             const query = "SELECT * FROM `user` where `user_id`=?;"
@@ -14,7 +14,6 @@ userHomePage: async (req, res, next, results,filter)=>{
                 conn.query(query, decoded.userId, (error, result) => {
                   if (error) {
                     console.log(error);
-                    throw error;
                   }
                   res.render("pages/index", {
                     isLogged: true,
@@ -56,7 +55,7 @@ userHomePage: async (req, res, next, results,filter)=>{
                 if (err)
                 {
                     console.log(err)
-                     throw err
+                    return res.render('auth/loginPage',  { error: 'Server error try again'});
                 }
 
                 if(result.length == 0 || !(await decryptData(body.password, result[0].pw))){
@@ -106,11 +105,11 @@ userHomePage: async (req, res, next, results,filter)=>{
                 if (error)
                 {
                     console.log(error)
-                    throw error
+                    return res.render('auth/signupPage', { error: 'Server error try again'});
                 }
                 
                 if (row.length >= 1) {
-                    return res.render('auth/signupPage', {error:null});
+                    return res.render('auth/signupPage', { error: 'The username is already used'});
                 }
             })
             
@@ -120,12 +119,11 @@ userHomePage: async (req, res, next, results,filter)=>{
                 if(error)
                 {
                     console.log (error);
-                    throw error;
+                    return res.render('auth/signupPage', {error: 'Your registration has failed. Try again'});
                 }
                 
                 if (rows.affectedRows !== 1) {
-                    return res.render('auth/signupPage', 
-                     {error: 'Your registration has failed.'});
+                    return res.render('auth/signupPage', {error: 'Your registration has failed. Try again'});
                 }
                 const user = {
                   role: "user",
