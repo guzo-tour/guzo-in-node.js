@@ -6,6 +6,6 @@ const validator = require('../lib/validation_rules');
 const checkAuthentication = require('../lib/check_authentication');
 router
 .route('/')
-.post(checkAuthentication.isLoggedIn, bookingController.book)
-.delete(checkAuthentication.isLoggedIn, bookingController.unbook);
+    .post(checkAuthentication.isLoggedIn, bookingController.book)
+    .delete(checkAuthentication.isLoggedIn, bookingController.unbook);
 module.exports = router;

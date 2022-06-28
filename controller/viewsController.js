@@ -156,5 +156,8 @@ module.exports = {
     },
     editTourPage: async(req,res)=>{
 
+    },
+    forgotPassword: (req, res, next)=>{
+      res.render('pages/resetpassPage', {message: "Enter your email address and we'll send you an email with instructions to reset your password."})
     }
 }
