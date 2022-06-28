@@ -6,7 +6,7 @@ const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
 module.exports = {
 
-userHomePage: async (req, res, next, results)=>{
+userHomePage: async (req, res, next, results,filter)=>{
         if(req.cookies.jwt){
             const  decoded =  await  promisify(jwt.verify)(req.cookies.jwt,process.env.JWT_SECRET);
             const query = "SELECT * FROM `user` where `user_id`=?;"
@@ -21,6 +21,7 @@ userHomePage: async (req, res, next, results)=>{
                     msg: `Welcome back user`,
                     result: results,
                     user: result,
+                    filter
                   });
                 });
             }catch(err){
@@ -33,14 +34,13 @@ userHomePage: async (req, res, next, results)=>{
                isLogged: false,
                msg: `Welcome back user`,
                result: results,
+               filter,
              });
         
         }
     },
 
-    // userLoginPage: (req, res)=>{
-    //     return res.render('auth/loginPage', {error: null})        
-    // },
+ 
 
     userLogin: async(req, res)=>{
         const error = validationResult(req)

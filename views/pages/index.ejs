@@ -33,7 +33,7 @@
                   <li ><input type="radio" value="duration" name="searchBy" /><span >duration</span ></li>
                   <li ><label for="region">price</label></li>
                   <li ><input type="radio" id="greater" value=">=" name="searchBy" /><label for="greater">greater </label></li>
-                  <li ><input type="radio" id="less" value='' name="searchBy" /><label for="less">less</label></li>
+                  <li ><input type="radio" id="less" value='>=' name="searchBy" /><label for="less">less</label></li>
         </ul>
       </li>
        
@@ -62,6 +62,7 @@
         <% } %> 
     </nav>
  </header>
+ <%  if(!filter.filter){ %> 
  <div class="home" id="home">
         <div class="content">
             <h3>Guzo Tour</h3>
@@ -79,6 +80,7 @@
             <video src="./video/hawassa.mp4" id="video-slider" loop autoplay muted></video>
         </div>
 </div>
+<% } %> 
 <div class = 'book'>
             <h1 class="heading">
                 <span>b</span>

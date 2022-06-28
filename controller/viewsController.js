@@ -13,15 +13,26 @@ module.exports = {
             try {
               var query = "select * from `tour`";
               if (req.query.searchBy && req.query.search_query) {
-            
-               query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE ${req.query.searchBy} LIKE  "%${req.query.search_query}%"`;
-              }
+                if (req.query.searchBy == "<=" || req.query.searchBy == ">=") {
+                  query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.price ${req.query.searchBy}${req.query.search_query}`;
+                } else {
+                  query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE ${req.query.searchBy} LIKE  "%${req.query.search_query}%"`;
+                }
+
+             }
               conn.query(query, (error, result) => {
                 if (error) {
                   throw error;
                 }
+                 if (req.query.searchBy){
+                     userHomePage(req, res, next, result,{filter:true});
+                }
+                else{
+                     userHomePage(req, res, next, result, { filter: false });
 
-                userHomePage(req, res, next, result);
+                }
+                    
+                    
               });
             } catch (error) {
              console.log(error)
