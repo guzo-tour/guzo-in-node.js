@@ -7,7 +7,7 @@ const ejs = require('ejs')
 const sessions = require('express-session');
 const expressValidator = require('express-validator')
 const cookieParser = require('cookie-parser')
-
+const flash=require("connect-flash");
 const app = express()
 //const Router = require('./routes/routes')
 app.set('views', path.join(__dirname, 'views'));
@@ -16,7 +16,7 @@ app.use(express.static(`${__dirname}/public`))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
-
+app.use(flash());
 const PORT = process.env.PORT || 5050
 
 app.listen(PORT,()=>{

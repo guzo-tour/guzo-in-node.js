@@ -20,7 +20,7 @@
     <nav class="nav nav--tours">
         <a href="" class="nav__el">All tours</a>
 
-       <form action="/" class="nav__search"  method="get" >
+       <form action="/?filter=true" class="nav__search"  method="get">
         <li class="hov"> 
            <p> Search by</p>
         <ul class="seleter">
@@ -33,7 +33,7 @@
                   <li ><input type="radio" value="duration" name="searchBy" /><span >duration</span ></li>
                   <li ><label for="region">price</label></li>
                   <li ><input type="radio" id="greater" value=">=" name="searchBy" /><label for="greater">greater </label></li>
-                  <li ><input type="radio" id="less" value='' name="searchBy" /><label for="less">less</label></li>
+                  <li ><input type="radio" id="less" value='>=' name="searchBy" /><label for="less">less</label></li>
         </ul>
       </li>
        
@@ -62,6 +62,7 @@
         <% } %> 
     </nav>
  </header>
+ <%  if(!filter.filter){ %> 
  <div class="home" id="home">
         <div class="content">
             <h3>Guzo Tour</h3>
@@ -79,6 +80,7 @@
             <video src="video/hawassa.mp4" id="video-slider" loop autoplay muted></video>
         </div>
 </div>
+<% } %> 
 <div class = 'book'>
             <h1 class="heading">
                 <span>b</span>
@@ -199,6 +201,14 @@
                 videoSlider.src = e.target.dataset.src
             })
         })
+  var x=document.cookie
+  console.log(x);
+  if(x.booked){
+    alert("booked")
+
+
+  }
+
         </script>
     
   </body>

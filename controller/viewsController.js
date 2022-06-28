@@ -9,19 +9,34 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
     homePage: (req, res, next)=>{
-    
-      const query = 'select * from `tour`'
-      try{
-        conn.query(query, (error, result)=>{
-          if (error){
-            console.log(err)
-            throw err
-          }        
-        userHomePage(req, res, next, result);
-        })
-      }catch(err){
-        next(err);
-      }
+         
+            try {
+              var query = "select * from `tour`";
+              if (req.query.searchBy && req.query.search_query) {
+                if (req.query.searchBy == "<=" || req.query.searchBy == ">=") {
+                  query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.price ${req.query.searchBy}${req.query.search_query}`;
+                } else {
+                  query = `SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE ${req.query.searchBy} LIKE  "%${req.query.search_query}%"`;
+                }
+
+             }
+              conn.query(query, (error, result) => {
+                if (error) {
+                  throw error;
+                }
+                 if (req.query.searchBy){
+                     userHomePage(req, res, next, result,{filter:true});
+                }
+                else{
+                     userHomePage(req, res, next, result, { filter: false });
+
+                }
+                    
+                    
+              });
+            } catch (error) {
+             console.log(error)
+            }
         
        
     },
@@ -35,7 +50,6 @@ module.exports = {
         sql1 ="SELECT * FROM review WHERE tour_id=? ORDER BY id DESC LIMIT 4;";
         count = "SELECT COUNT(*) FROM booking WHERE tour_id=?;";
         const query = "SELECT * FROM `user` where `user_id`=?;";
-    
          conn.query(sql,id,function(err,result,fields){
             if (err) throw err;
             conn.query(sql1, id, function (err, result2, fields) {
@@ -59,6 +73,7 @@ module.exports = {
                        count,
                        isLogged: true,
                        user: userResult,
+                       bookedAlready:false
                      });
                     });
                 }catch(err){
