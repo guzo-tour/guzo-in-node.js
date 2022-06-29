@@ -108,7 +108,7 @@ module.exports = {
 
     userProfilePage: (req, res, next)=>{
       user = req.user;
-      if(user.role=="admin"){
+      if(user.role=="user"){
          const query =
            "select * from `tour` inner join `booking` on booking.tour_id=tour.tour_id where booking.user_id=?;";
          try {
@@ -189,12 +189,13 @@ module.exports = {
       return res.render('admin/addTour', {error: null})
     },
     editTourPage: async(req,res)=>{
-      const tourId = req.query.tourId;
+      const tourId = req.params.tourId;
       sql =`SELECT * FROM tour INNER JOIN address ON tour.tour_id = address.tour_id WHERE tour.tour_id= ${tourId}`;
+      console.log(tourId)
       conn.query(sql, (error, tours)=>{
         if(error){
           console.log(error.message);
-           return res.render('pages/404',{errorMessage:error.sqlMessage});
+           return res.render('pages/error',{errorMessage:error.sqlMessage});
         } 
         else{
           return res.render('admin/editTour', {tour: tours[0], error: null,isLogged:true,user:req.user})

@@ -19,7 +19,7 @@ module.exports = {
   },
   unbook: async(req,res)=>{
     const userId = req.user.userId;
-    const tourId = req.params.tourId;
+    const tourId = req.query.tourId;
     const query = "delete from booking where user_id = ? and tour_id = ?";
     conn.query(query, [userId,tourId], (error, row)=>{
         if(error){

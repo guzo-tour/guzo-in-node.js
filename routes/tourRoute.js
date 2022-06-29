@@ -10,11 +10,7 @@ router
 
 router
 .route('/:tourId')
-.post(checkAuthentication.isLoggedIn, checkAuthentication.isAuthorized,validationRules[3], tourController.editTour)
+.post(checkAuthentication.isLoggedIn,checkAuthentication.isAuthorized, tourController.editTour)
 .delete(checkAuthentication.isLoggedIn, checkAuthentication.isAuthorized, tourController.deleteTour)
-// router
-// .route('/:id')
-// .patch(tourController.updateTour)
-// .delete(authController.protect,authController.restrictTo('admin','lead-guide'),tourController.deleteTour);
-  
+
 module.exports = router; 

@@ -29,7 +29,6 @@ module.exports = {
         if(error){
            throw error; 
         } 
-     
 
     })   
   },

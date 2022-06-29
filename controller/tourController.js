@@ -109,17 +109,16 @@ module.exports = {
           }
       });
     }
-
     
   },
   deleteTour: async(req,res)=>{
     const tourId = req.params.tourId;
-	  var query = `DELETE FROM tours WHERE tour_id = "${tourId}"`;
+	  var query = `DELETE FROM tour WHERE tour_id = "${tourId}"`;
    	conn.query(query, function(error){
       if(error)
       {
         console.log(error);
-        return res.render('pages/404', {errorMessage:error.sqlMessage});
+        return res.render('pages/error', {errorMessage:error.sqlMessage});
       }
       else
       {
