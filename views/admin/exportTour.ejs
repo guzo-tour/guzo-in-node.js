@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export File</title>
+    <style>
+        body{
+            font-size: 20px;
+        }
+        table#show{
+            width: 90%;
+            margin-top:50px;
+            margin-bottom:50px;
+
+        }
+        table#show, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        th{
+            color: blue;
+        }
+        td{
+            color: rgb(8, 15, 1);
+        }
+        input{
+            border:none;
+            border-style: none;
+        }
+        .double{
+            margin-left:10px;
+        }
+        #submit{
+            font-size:25px;
+            color: blue;
+            margin-top:10px;
+        }
+        a:link, a:visited {
+            background-color: blue;
+            color: white;
+           
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size:25px;
+        }
+
+        a:hover, a:active {
+        background-color: green;
+        }
+        #search-form{
+            /* color:red;
+            display:none; */
+            margin-left:100px;
+            margin-top:20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- <button type="onclick" value = "Submit" name="submit" id="goto-search">Search</button> -->
+<form action="" method="post" id="search-form">
+        <table>
+            <tr>
+                <th>Query</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" name="tour-name"></td>
+            </tr>
+            <tr>
+                <td>Town:</td>
+                <td><input type="text" name="town"></td>
+            </tr>
+            <tr>
+                <td>Region:</td>
+                <td><input type="text" name="region"></td>
+            </tr>
+            <tr>
+                <td>Direction:</td>
+                <td><input type="text" name="direction"></td>
+            </tr>
+           
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>Min<input type="number" name="min-price">Max<input type="number" name="max-price"></td>
+                <!-- <td>Max<input type="number" name="max-price"></td> -->
+            </tr>
+    
+            <tr>
+                <td>Start Date:</td>
+                <td>From<input type="date" class  = "double"name="start-begin">To<input type="date" class  = "double" name="start-end"></td>
+                <!-- <td>To<input type="date" class  = "double" name="start-end"></td> -->
+            </tr>
+            
+        </table>
+        
+        <button type="onclick" value = "Submit" name="submit" id="submit">Search</button>
+    </form>
+    </div>
+    <table id="show">
+        <tr>
+            <th>Tour Id</th>
+            <th>Tour Name</th>
+            <th>Difficulty</th>
+            <th>Duration</th>
+            <th>Group Size</th>
+            <th>Price</th>
+            <th>Discount Price</th>
+            <th>Start Date</th>
+            <th>Region</th>
+            <th>Town</th>
+            <th>Dirrection</th>
+        </tr>
+      
+                 
+        <%  for(var data=0; data<tours.length;data++){ %>
+            <tr>
+                <td><%= tours[data].tour_id%></td>
+                <td><%= tours[data].tour_name%></td>
+                <td><%= tours[data].difficulty%></td>
+                <td><%= tours[data].group_size%></td>
+                <td><%= tours[data].duration%></td>
+                <td><%= tours[data].price%></td>
+                <td><%= tours[data].discount%></td>
+                <td><%= tours[data].start_date%></td>
+                <td><%= tours[data].town%></td>
+                <td><%= tours[data].direction%></td>
+                <td><%= tours[data].region%> </td>
+            </tr>
+        <% } %> 
+                 
+    </table>
+    <button><a id  = "download" href="downloadFile.php?file=' . urlencode('tours.csv') . '">Download</a></button></p>
+    <script>
+        // ocument.getElementById("download").addEventListener('click',()=>{
+        //     alert("hi");
+        //     <?php
+        //          $file1 = fopen('./tours.csv','a');
+            
+        //          if (!$file1) {
+        //              echo "<p>Unable to open remote file.\n";
+        //              exit;
+        //          }else{
+        //              fputcsv($file1, $tours);
+        //              fclose($file1);
+        //          }
+        //     ?>
+        //     console.log("The file saved");
+        // })
+        
+    document.getElementById("goto-search").addEventListener('click', (e)=>{
+        console.log("Hello world");
+    //     document.getElementById("goto-search").style.display = 'none';
+    //     console.log("Hello world");
+    // document.getElementById("search-form").style.display= 'block';
+})
+    </script>
+</body>
+   
+</html>

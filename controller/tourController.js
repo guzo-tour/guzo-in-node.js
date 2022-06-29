@@ -65,8 +65,8 @@ module.exports = {
             return res.render('pages/error',{errorMessage:err.sqlMessage});
          } 
          else{
-          console.log(tours[0]);
-           return res.render('admin/editTour', {tour: tours[0], error:error.array()[0].msg, isLogged:true,user:req.user})
+            const user = [req,user]
+           return res.render('admin/editTour', {tour: tours[0], error:error.array()[0].msg, isLogged:true,user:user})
          }
        })
     }else{
@@ -109,7 +109,7 @@ module.exports = {
           }
       });
     }
-    
+
   },
   deleteTour: async(req,res)=>{
     const tourId = req.params.tourId;

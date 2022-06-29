@@ -1,6 +1,7 @@
 const sessions = require('express-session')
 const { validationResult } = require('express-validator')
-const {encryptData, decryptData,signToken} = require('../lib/modules')
+const crypto = require('crypto')
+const {encryptData, decryptData,signToken, sendEmail} = require('../lib/modules')
 const conn = require('../config/DB_Connection')
 const { promisify} = require("util");
 const jwt = require("jsonwebtoken");
@@ -142,16 +143,57 @@ module.exports = {
         }catch(err){
             next(err);
         }
-
     },
+
     userLogout: (req, res) => {
         console.log(655)
         res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() -10 * 1000),
         httpOnly: true
-  });
-  res.redirect("/");
-  
+        });
+        res.redirect("/");
+    },
+    resetPassword: (req, res, next)=>{
+        const { body } = req
 
-}
+        const error = validationResult(req)
+
+        if(!error.isEmpty()){
+            return res.render('pages/resetpassPage', {message: error.array()[0].msg})
+        }
+
+        try{
+            const query = 'select * from `user` where `email`=?;'
+            conn.query(query, body.email, (err, result)=>{
+                if(err){
+                    console.log(err)
+                    return res.redirect('/error')
+                }
+                if(result.length < 1){
+                    return res.render('pages/resetpassPage', {message: 'Unknown email, try again'})
+                }
+                const token = (crypto.randomBytes(20)).toString('hex');
+                const message = 'Please click the following link to recover your password: \n\n'+ 
+                'http://'+ req.headers.host + ':' + process.env.PORT +'/resetPassword?token='+token+'\n\n'+
+                'If you did not request this, please ignore this email.'
+                const subject = 'Recovery Email from Guzo Tour'
+                try{
+                    const ob = sendEmail(body.email, message, subject)
+                    req.mailSent = ob
+                    next()
+                }catch(err){
+                    console.log(err)
+                    return res.redirect('/error')
+                }
+
+            })
+        }catch(err){
+            console.log(err)
+        }
+        console.log(body)
+    },
+    reset: (req, res, next)=>{
+        const { mailSent } = req
+        console.log(mailSent) 
+    }
 }

@@ -15,6 +15,7 @@ router.get('/signup',checkAuthentication.isNotLoggedin, viewsController.userSign
 router.get('/profile', checkAuthentication.isLoggedIn, viewsController.userProfilePage);
 router.get('/addTour', checkAuthentication.isLoggedIn, checkAuthentication.isAuthorized,viewsController.addTourPage);
 router.get('/editTour/:tourId', checkAuthentication.isLoggedIn,  checkAuthentication.isAuthorized, viewsController.editTourPage);
+router.get('/exportTour', checkAuthentication.isLoggedIn, checkAuthentication.isAuthorized,viewsController.exportTour);
 
 
 

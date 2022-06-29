@@ -8,6 +8,7 @@ const sessions = require('express-session');
 const expressValidator = require('express-validator')
 const cookieParser = require('cookie-parser')
 const app = express()
+
 //const Router = require('./routes/routes')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');	

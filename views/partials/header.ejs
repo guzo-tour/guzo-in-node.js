@@ -12,10 +12,10 @@
   
      <nav class="nav nav--user">        
           <%  if(isLogged){ %> 
-         <a href="view/shared/profile.php" class="nav__el">
-         <img src = "img/users/<%= user.photo %> " class='nav__user-img'>
+         <a href="/profile" class="nav__el">
+         <img src = "img/users/<%= user[0].photo %> " class='nav__user-img'>
           </a>
-          <a href="logout" class="nav__el">Logout</a>
+          <a href="/logout" class="nav__el">Logout</a>
           <% } %> 
        <%  if(!isLogged){ %> 
        <a href="/login" class="nav__el">Login</a>

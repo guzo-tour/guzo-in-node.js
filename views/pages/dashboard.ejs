@@ -136,7 +136,9 @@
         <th><span>Group Size</span></th>
         <th><span>Region </span></th>
         <th><span>Town</span></th>
+        <th><span>Difficulty</span></th>
         <th><span>price</span></th>
+        <th><span>Discount</span></th>
         <th><span>Duration</span></th>
         <th><span>Start data</span></th>
         <th><span>Edit</span></th>
@@ -151,8 +153,10 @@
         <td class="lalign"><%=result[data].tour_name %> </td>
         <td><%=result[data].group_size %> </td>
         <td><%=result[data].region %> </td>
-        <td><%=result[data].town %></td> 
+        <td><%=result[data].town %></td>
+        <td><%=result[data].difficulty %></td>
         <td><%=result[data].price %></td>
+        <td><%=result[data].discout %></td>
         <td> <%=result[data].duration %></td>
         <td><%=date[0] %></td>
         <td> <a class="edit" href="/editTour/<%=result[data].tour_id %>">EDIT</a></td>
@@ -168,7 +172,19 @@
 
        
   </table>
+   <% var x1=dataPoints1[0].label %> 
+   <% var x2=dataPoints1[1].label %> 
+   <% var x3=dataPoints1[2].label %> 
+   <% var x4=dataPoints1[3].label %> 
 
+
+   <% var l1=dataPoints1[0].y%> 
+   <% var l2=dataPoints1[1].y%> 
+   <% var l3=dataPoints1[2].y%> 
+   <% var l4=dataPoints1[3].y%> 
+   <% var l5=dataPoints1[4].y%> 
+  
+ 
   
     </div>
 <div id="chartContainer">
@@ -186,7 +202,7 @@
     <div class="xbtn"><button>X</button></div>
      <div class="imgSize">
                  
-      <img class='imags' src = "../img/users/">
+      <img class='imags' src = "../img/users/<%=user.photo %>">
       
         <div class="up">
         </div>
@@ -206,16 +222,16 @@
   <form action="#"  method="post">
           <div>
             
-   <p>First Name:    <input class='editInput' name='first_name' type='text' value='$first_name' disabled=true>";
-    </p>
-     <p>Last Name:  <input class='editInput' name='last_name' type='text' value='$last_name' disabled=true>";
+   <p>First Name: <input class='editInput' name='first_name' type='text' value='<%=user.first_name %> ' disabled=true>
+    
+     <p>Last Name:  <input class='editInput' name='last_name' type='text' value='<%=user.last_name %>' disabled=true>
        </p>
     
-    <p>Phone:   <input name='phone' class='editInput' type='text' value='$phone_number' disabled=true>";
+    <p>Phone:   <input name='phone' class='editInput' type='text' value='<%=user.phone_number %>' disabled=true>
         </p>
-       <p>email:   <input name='email' class='editInput' type='text' size='27' value='$email' disabled=true>";
+       <p>email:   <input name='email' class='editInput' type='text' size='27' value='<%=user.email %>' disabled=true>
        </p>
-        <p> username:  </p>
+        <p> username:<%=user.username %>  </p>
         <button class="upload disabler uploads" id="goto-edit-profile">Edit Profile</button>
         <input class="upload editProfile"  type="submit" name="edit" value="Save" id="">
       </div>
@@ -242,8 +258,72 @@
   
 <script src="javascript/ap.js"></script>
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-  <!-- <script src="javascript/ap.js"></script> -->
+
 <script>
+  var label1= "<%=x1%>" 
+  var label2= "<%=x2%>"
+  var label3= "<%=x3%>"
+  var label4= "<%=x4%>"
+   var sum=parseInt("<%=l1%>")+parseInt("<%=l2%>") +parseInt("<%=l3%>") +parseInt("<%=l4%>")+parseInt("<%=l5%>") 
+ var N=(parseInt("<%=l1%>")/sum)*100;
+ var S=(parseInt("<%=l2%>")/sum)*100;
+ var E=(parseInt("<%=l3%>")/sum)*100;
+ var W=(parseInt("<%=l4%>")/sum)*100;
+ var C=(parseInt("<%=l4%>")/sum)*100;
+  
+
+
+  // console.log(data.label);
+
+    
+
+        var chart = new CanvasJS.Chart("month-chart", {
+         theme: "light2", // "light1", "light2", "dark1", "dark2"
+	exportEnabled: true,
+	animationEnabled: true,
+	title: {
+		text: "Booking result on direction"
+	},
+	data: [{
+		type: "pie",
+		startAngle: 25,
+		toolTipContent: "<b>{label}</b>: {y}%",
+		showInLegend: "true",
+		legendText: "{label}",
+		indexLabelFontSize: 16,
+		indexLabel: "{label} - {y}%",
+		dataPoints: [
+			{ y: N, label: "North" },
+			{ y: S, label: "South" },
+			{ y: E, label: "East" },
+			{ y: W, label: "West" },
+			{ y: C, label: "Center" },
+		
+		]
+	}]
+});
+chart.render();
+      
+
+        var chart1 = new CanvasJS.Chart("location-chart", {
+            animationEnabled: false,
+            title: {
+                text: "Booking Location Graph"
+            },
+            axisY: {
+                minimum: 0,
+                maximum: 100,
+                suffix: "%"
+            },
+            data: [{
+                type: "column",
+                indexLabel: "{y}",
+                dataPoints:data
+            }]
+        });
+        chart1.render();
+      
+
   function diplayImageForm(id){
   //console.log(2345665);
     document.getElementById(id).style.display = "none";
